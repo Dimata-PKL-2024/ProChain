@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lat_prochain/view/add_category_screen.dart';
+import 'package:get/get.dart';
+//import 'package:lat_prochain/view/add_category_screen.dart';
 import 'package:lat_prochain/view/category_screen.dart';
 
 void main() {
@@ -11,13 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Daftar Kategori',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: AddCategoryScreen(), 
+      home: CategoryScreen(), 
     );
   }
 }

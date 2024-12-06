@@ -13,10 +13,9 @@ class AddCategoryScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              const Center(
+              Center(
                 child: Text(
                   'Silahkan menambahkan Kategori',
                   style: TextStyle(
@@ -27,64 +26,92 @@ class AddCategoryScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
-              _buildTextField(
-                controller: controller.codeController,
-                label: 'Kode*',
-              ),
               const SizedBox(height: 16),
-              _buildTextField(
-                controller: controller.nameController,
-                label: 'Nama Kategori',
-              ),
-              const SizedBox(height: 16),
-              Obx(() => _buildDropdown(
-                    label: 'Parent Kategori',
-                    value: controller.selectedParentCategory.value,
-                    items: ['Parent 1', 'Parent 2', 'Parent 3'],
-                    onChanged: (value) {
-                      controller.selectedParentCategory.value = value;
-                    },
-                  )),
-              const SizedBox(height: 16),
-              Obx(() => _buildChoiceChips(controller: controller)),
-              const SizedBox(height: 16),
-              _buildTextField(
-                controller: controller.taxTypeController,
-                label: 'Jenis Pajak',
-              ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                controller: controller.descriptionController,
-                label: 'Keterangan',
-              ),
-              const SizedBox(height: 16),
-              GestureDetector(
-                onTap: controller.toggleMoreFields,
-                child: Obx(() => _MoreRow(
-                      isExpanded: controller.showMoreFields.value,
-                    )),
-              ),
-              Obx(() {
-                if (controller.showMoreFields.value) {
-                  return Column(
-                    children: [
-                      const SizedBox(height: 16),
-                      _buildTextField(
-                        controller: controller.pointPriceController,
-                        label: 'Harga Poin',
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextField(
+                      controller: controller.codeController,
+                      label: 'Kode*',
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: controller.nameController,
+                      label: 'Nama Kategori',
+                    ),
+                    const SizedBox(height: 16),
+                    Obx(() => _buildDropdown(
+                          label: 'Parent Kategori',
+                          value: controller.selectedParentCategory.value,
+                          items: ['Parent 1', 'Parent 2', 'Parent 3'],
+                          onChanged: (value) {
+                            controller.selectedParentCategory.value = value;
+                          },
+                        )),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Tipe",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Inter',
                       ),
-                      const SizedBox(height: 16),
-                      _buildTextField(
-                        controller: controller.priceIncreaseController,
-                        label: 'Kenaikan Harga',
-                      ),
-                    ],
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              }),
+                    ),
+                    const SizedBox(height: 8),
+                    Obx(() => _buildChoiceChips(controller: controller)),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: controller.taxTypeController,
+                      label: 'Jenis Pajak',
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: controller.descriptionController,
+                      label: 'Keterangan',
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: controller.toggleMoreFields,
+                      child: Obx(() => _MoreRow(
+                            isExpanded: controller.showMoreFields.value,
+                          )),
+                    ),
+                    Obx(() {
+                      if (controller.showMoreFields.value) {
+                        return Column(
+                          children: [
+                            const SizedBox(height: 16),
+                            _buildTextField(
+                              controller: controller.pointPriceController,
+                              label: 'Harga Poin',
+                            ),
+                            const SizedBox(height: 16),
+                            _buildTextField(
+                              controller: controller.priceIncreaseController,
+                              label: 'Kenaikan Harga',
+                            ),
+                          ],
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }),
+                  ],
+                ),
+              ),
               const SizedBox(height: 32),
               _buildSaveButton(),
             ],
@@ -94,46 +121,42 @@ class AddCategoryScreen extends StatelessWidget {
     );
   }
 
-AppBar _buildAppBar() {
-  return AppBar(
-    backgroundColor: Colors.white,
-    elevation: 1,
-    centerTitle: true,
-    title: const Text(
-      'Tambah Kategori',
-      style: TextStyle(
-        color: Color(0xFF000000), 
-        fontSize: 15,
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    leading: TextButton(
-      onPressed: () {
-
-      },
-      child: const Text(
-        'Batal',
+  AppBar _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 1,
+      centerTitle: true,
+      title: const Text(
+        'Tambah Kategori',
         style: TextStyle(
-          color: Color(0xFF6200EE), 
-          fontSize: 13,
+          color: Color(0xFF000000),
+          fontSize: 15,
           fontFamily: 'Inter',
-          fontWeight: FontWeight.normal,
-          height: 1.0, 
+          fontWeight: FontWeight.bold,
         ),
       ),
-    ),
-    actions: [
-      IconButton(
-        icon: const Icon(Icons.visibility, color: Color(0xFF000000)),
+      leading: TextButton(
         onPressed: () {
-
+          Get.back();
         },
+        child: const Text(
+          'Batal',
+          style: TextStyle(
+            color: Color(0xFF6200EE),
+            fontSize: 13,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.normal,
+          ),
+        ),
       ),
-    ],
-  );
-}
-
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.visibility, color: Color(0xFF000000)),
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
 
   Widget _buildTextField({
     required TextEditingController controller,
@@ -196,53 +219,67 @@ AppBar _buildAppBar() {
     );
   }
 
-  Widget _buildChoiceChips({required CategoryController controller}) {
-    return Row(
-      children: [
-        Expanded(
-          child: ChoiceChip(
-            label: const Text('Inventory Items'),
-            selected: controller.selectedType.value == 'Inventory Items',
-            onSelected: (_) => controller.updateSelectedType('Inventory Items'),
+Widget _buildChoiceChips({required CategoryController controller}) {
+  return Row(
+    children: [
+      Expanded(
+        child: ChoiceChip(
+          label: const Text('Inventory Items'),
+          selected: controller.selectedType.value == 'Inventory Items',
+          selectedColor: const Color(0xFF6200EE),
+          labelStyle: TextStyle(
+            color: controller.selectedType.value == 'Inventory Items'
+                ? Colors.white
+                : Colors.black,
           ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: ChoiceChip(
-            label: const Text('Sales Items'),
-            selected: controller.selectedType.value == 'Sales Items',
-            onSelected: (_) => controller.updateSelectedType('Sales Items'),
-          ),
-        ),
-      ],
-    );
-  }
-
-Widget _buildSaveButton() {
-  return SizedBox(
-    width: double.infinity,
-    child: ElevatedButton(
-      onPressed: () {
-        controller.addCategory(); 
-        Get.back(); 
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF6200EE),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-      ),
-      child: const Text(
-        'Simpan',
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.white,
-          fontFamily: 'Inter',
-          fontWeight: FontWeight.bold,
+          onSelected: (_) => controller.updateSelectedType('Inventory Items'),
+          checkmarkColor: Colors.white,
         ),
       ),
-    ),
+      const SizedBox(width: 8),
+      Expanded(
+        child: ChoiceChip(
+          label: const Text('Sales Items'),
+          selected: controller.selectedType.value == 'Sales Items',
+          selectedColor: const Color(0xFF6200EE),
+          labelStyle: TextStyle(
+            color: controller.selectedType.value == 'Sales Items'
+                ? Colors.white
+                : Colors.black,
+          ),
+          onSelected: (_) => controller.updateSelectedType('Sales Items'),
+          checkmarkColor: Colors.white,
+        ),
+      ),
+    ],
   );
 }
 
+
+  Widget _buildSaveButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          controller.addCategory();
+          Get.back();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF6200EE),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+        ),
+        child: const Text(
+          'Simpan',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _MoreRow extends StatelessWidget {
