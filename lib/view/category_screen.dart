@@ -92,18 +92,26 @@ class CategoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryList(List categories, String categoryName) {
+Widget _buildCategoryList(List categories, String categoryName) {
+  return Obx(() {
+    if (categories.isEmpty) {
+      return Center(
+        child: Text('Belum ada $categoryName ditambahkan.'),
+      );
+    }
     return ListView.builder(
       itemCount: categories.length,
       itemBuilder: (context, index) {
         final category = categories[index];
         return ListTile(
-          title: Text(category['name'] ?? ''),
-          subtitle: Text('Kode: ${category['code'] ?? ''}'),
+          title: Text(category['name'] ?? 'Kategori Tidak Bernama'),
+          subtitle: Text('Type: ${category['type'] ?? 'Tidak Ada Kode'}'),
+          trailing: Text(category['code'] ?? ''),
         );
       },
     );
-  }
+  });
+}
 }
 
 class EmptyCategoryWidget extends StatelessWidget {

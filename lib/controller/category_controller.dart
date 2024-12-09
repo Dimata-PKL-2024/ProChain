@@ -15,7 +15,6 @@ class CategoryController extends GetxController with GetSingleTickerProviderStat
 
   var selectedParentCategory = Rxn<String>();
   var selectedType = ''.obs;
-
   var showMoreFields = false.obs;
 
   @override

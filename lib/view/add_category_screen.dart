@@ -255,7 +255,6 @@ Widget _buildChoiceChips({required CategoryController controller}) {
   );
 }
 
-
   Widget _buildSaveButton() {
     return SizedBox(
       width: double.infinity,
