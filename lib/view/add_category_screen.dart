@@ -121,42 +121,99 @@ class AddCategoryScreen extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 1,
-      centerTitle: true,
-      title: const Text(
-        'Tambah Kategori',
+AppBar _buildAppBar() {
+  return AppBar(
+    backgroundColor: Colors.white,
+    elevation: 1,
+    centerTitle: true,
+    title: const Text(
+      'Tambah Kategori',
+      style: TextStyle(
+        color: Color(0xFF000000),
+        fontSize: 15,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    leading: TextButton(
+      onPressed: () {
+        Get.back();
+      },
+      child: const Text(
+        'Batal',
         style: TextStyle(
-          color: Color(0xFF000000),
-          fontSize: 15,
+          color: Color(0xFF6200EE),
+          fontSize: 13,
           fontFamily: 'Inter',
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.normal,
         ),
       ),
-      leading: TextButton(
-        onPressed: () {
-          Get.back();
-        },
-        child: const Text(
-          'Batal',
-          style: TextStyle(
-            color: Color(0xFF6200EE),
-            fontSize: 13,
-            fontFamily: 'Inter',
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.visibility, color: Color(0xFF000000)),
-          onPressed: () {},
-        ),
-      ],
-    );
-  }
+    ),
+    actions: [
+      Obx(() => IconButton(
+            icon: Icon(
+              controller.isHidden.value
+                  ? Icons.visibility_off
+                  : Icons.visibility,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              controller.toggleVisibility();
+              showDialog(
+                context: Get.context!,
+                builder: (context) => AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  contentPadding: const EdgeInsets.all(24),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        controller.isHidden.value ? 'Mode Hide' : 'Mode Normal',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2E2E2E),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        controller.isHidden.value
+                            ? 'Kategori ini telah disembunyikan!'
+                            : 'Kategori ini telah ditampilkan kembali di daftar anda!',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF2E2E2E),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF5F3DC4),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                        ),
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text(
+                          'Selesai',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          )),
+    ],
+  );
+}
+
 
   Widget _buildTextField({
     required TextEditingController controller,

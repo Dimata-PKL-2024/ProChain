@@ -16,12 +16,18 @@ class CategoryController extends GetxController with GetSingleTickerProviderStat
   var selectedParentCategory = Rxn<String>();
   var selectedType = ''.obs;
   var showMoreFields = false.obs;
+  var isHidden = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
   }
+
+    void toggleVisibility() {
+    isHidden.value = !isHidden.value;
+  }
+
 
   void addCategory() {
     categories.add({

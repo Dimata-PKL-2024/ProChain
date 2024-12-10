@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lat_prochain/view/add_category_screen.dart';
 import '../controller/category_controller.dart';
+import '../routes/app_routes.dart';
 
 class CategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CategoryController());
+    // Ambil instance controller dari Binding
+    final controller = Get.find<CategoryController>();
 
     return Scaffold(
-      appBar: _buildAppBar(controller, context),
+      appBar: _buildAppBar(controller),
       drawer: _buildDrawer(),
       body: Obx(() {
         if (controller.categories.isEmpty) {
@@ -25,14 +26,29 @@ class CategoryScreen extends StatelessWidget {
           controller: controller.tabController,
           children: [
             _buildCategoryList(controller.categories, 'Kategori'),
-           // _buildCategoryList(controller.subCategories, 'Sub kategori'),
+            // untuk sub kategori, tambahkan di sini
           ],
         );
       }),
+floatingActionButton: Obx(() {
+  if (controller.categories.isNotEmpty) {
+    return FloatingActionButton(
+      onPressed: () {
+        Get.toNamed(AppRoutes.ADD_CATEGORY);
+      },
+      backgroundColor: const Color(0xFF5F3DC4),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(100), // Membuatnya bulat sempurna
+      ),
+      child: const Icon(Icons.add, color: Colors.white),
+    );
+  }
+  return const SizedBox.shrink(); 
+}),
     );
   }
 
-  PreferredSizeWidget _buildAppBar(CategoryController controller, BuildContext context) {
+  PreferredSizeWidget _buildAppBar(CategoryController controller) {
     return AppBar(
       title: const Text(
         'Daftar Kategori',
@@ -41,12 +57,6 @@ class CategoryScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF5F3DC4),
       elevation: 0,
       centerTitle: true,
-      leading: IconButton(
-        icon: const Icon(Icons.menu, color: Colors.white),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-      ),
       bottom: TabBar(
         controller: controller.tabController,
         labelColor: Colors.white,
@@ -80,38 +90,61 @@ class CategoryScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.category),
             title: const Text('Kategori'),
-            onTap: () {},
+            onTap: () {
+              Get.offNamed(AppRoutes.CATEGORY); // Navigasi ke halaman kategori
+            },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Pengaturan'),
-            onTap: () {},
+            onTap: () {
+              // Tambahkan navigasi ke halaman pengaturan jika ada
+            },
           ),
         ],
       ),
     );
   }
 
-Widget _buildCategoryList(List categories, String categoryName) {
-  return Obx(() {
-    if (categories.isEmpty) {
-      return Center(
-        child: Text('Belum ada $categoryName ditambahkan.'),
-      );
-    }
-    return ListView.builder(
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        final category = categories[index];
-        return ListTile(
-          title: Text(category['name'] ?? 'Kategori Tidak Bernama'),
-          subtitle: Text('Type: ${category['type'] ?? 'Tidak Ada Kode'}'),
-          trailing: Text(category['code'] ?? ''),
+  Widget _buildCategoryList(List categories, String categoryName) {
+    return Obx(() {
+      if (categories.isEmpty) {
+        return Center(
+          child: Text(
+            'Belum ada $categoryName ditambahkan.',
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
+          ),
         );
-      },
-    );
-  });
-}
+      }
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          final category = categories[index];
+          return Card(
+            elevation: 4,
+            margin: const EdgeInsets.only(bottom: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              leading: CircleAvatar(
+                backgroundColor: const Color(0xFF5F3DC4),
+                child: const Icon(Icons.category, color: Colors.white),
+              ),
+              title: Text(
+                category['name'] ?? 'Kategori Tidak Bernama',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text('Type: ${category['type'] ?? 'Tidak Ada Kode'}'),
+              trailing: Text(category['code'] ?? ''),
+            ),
+          );
+        },
+      );
+    });
+  }
 }
 
 class EmptyCategoryWidget extends StatelessWidget {
@@ -153,7 +186,8 @@ class EmptyCategoryWidget extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                Get.to(() => AddCategoryScreen());
+                // Navigasi menggunakan rute
+                Get.toNamed(AppRoutes.ADD_CATEGORY);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF5F3DC4),
