@@ -317,8 +317,12 @@ Widget _buildChoiceChips({required CategoryController controller}) {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          controller.addCategory();
-          Get.back();
+      controller.saveCategory();
+      if (controller.isHidden.value) {
+        Get.toNamed('/hide-view'); // Redirect ke Hide View
+      } else {
+        Get.toNamed('/category'); // Redirect ke Category View
+      }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF6200EE),

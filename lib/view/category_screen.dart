@@ -12,39 +12,46 @@ class CategoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: _buildAppBar(controller),
       drawer: _buildDrawer(),
-      body: Obx(() {
-        if (controller.categories.isEmpty) {
-          return TabBarView(
-            controller: controller.tabController,
-            children: [
-              EmptyCategoryWidget(categoryName: 'Kategori'),
-              EmptyCategoryWidget(categoryName: 'Sub kategori'),
-            ],
+      body: Column(
+        children: [
+          _buildSearchAndFilter(controller), // Tambahkan pencarian dan filter
+          Expanded(
+            child: Obx(() {
+              if (controller.categories.isEmpty) {
+                return TabBarView(
+                  controller: controller.tabController,
+                  children: [
+                    EmptyCategoryWidget(categoryName: 'Kategori'),
+                    EmptyCategoryWidget(categoryName: 'Sub kategori'),
+                  ],
+                );
+              }
+              return TabBarView(
+                controller: controller.tabController,
+                children: [
+                  _buildCategoryList(controller.filteredCategories, 'Kategori'),
+                  // untuk sub kategori, tambahkan di sini
+                ],
+              );
+            }),
+          ),
+        ],
+      ),
+      floatingActionButton: Obx(() {
+        if (controller.categories.isNotEmpty) {
+          return FloatingActionButton(
+            onPressed: () {
+              Get.toNamed(AppRoutes.ADD_CATEGORY);
+            },
+            backgroundColor: const Color(0xFF5F3DC4),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100), // Membuatnya bulat sempurna
+            ),
+            child: const Icon(Icons.add, color: Colors.white),
           );
         }
-        return TabBarView(
-          controller: controller.tabController,
-          children: [
-            _buildCategoryList(controller.categories, 'Kategori'),
-            // untuk sub kategori, tambahkan di sini
-          ],
-        );
+        return const SizedBox.shrink();
       }),
-floatingActionButton: Obx(() {
-  if (controller.categories.isNotEmpty) {
-    return FloatingActionButton(
-      onPressed: () {
-        Get.toNamed(AppRoutes.ADD_CATEGORY);
-      },
-      backgroundColor: const Color(0xFF5F3DC4),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100), // Membuatnya bulat sempurna
-      ),
-      child: const Icon(Icons.add, color: Colors.white),
-    );
-  }
-  return const SizedBox.shrink(); 
-}),
     );
   }
 
@@ -105,6 +112,129 @@ floatingActionButton: Obx(() {
       ),
     );
   }
+
+Widget _buildSearchAndFilter(CategoryController controller) {
+  return Obx(() {
+    if (controller.categories.isEmpty) {
+      return const SizedBox.shrink(); // Tidak tampil jika tidak ada kategori
+    }
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              // Search Box
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                      hintText: 'Cari kategori...',
+                      hintStyle: TextStyle(color: Colors.grey.shade600),
+                      border: InputBorder.none,
+                      prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                    ),
+                    onChanged: (value) {
+                      controller.searchCategories(value); // Filter kategori berdasarkan pencarian
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              // Filter Icon
+              GestureDetector(
+                onTap: () {
+                  // Buka dialog atau bottom sheet untuk filter
+                  showModalBottomSheet(
+                    context: Get.context!,
+                    builder: (context) {
+                      return Container(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Filter Kategori',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 12),
+                            ListTile(
+                              leading: const Icon(Icons.tune),
+                              title: const Text('Tipe 1'),
+                              onTap: () {
+                                controller.filterCategories('Type 1');
+                                Get.back();
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.tune),
+                              title: const Text('Tipe 2'),
+                              onTap: () {
+                                controller.filterCategories('Type 2');
+                                Get.back();
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.tune),
+                              title: const Text('Tipe 3'),
+                              onTap: () {
+                                controller.filterCategories('Type 3');
+                                Get.back();
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.tune, color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        // Tambahkan "Disembunyikan" dengan ikon
+        GestureDetector(
+          onTap: () {
+            Get.toNamed(AppRoutes.HIDE_VIEW); // Navigasi ke halaman hide view
+          },
+          child: Row(
+            children: [
+              const Icon(Icons.visibility_off, color: Colors.grey),
+              const SizedBox(width: 8),
+              Text(
+                'Disembunyikan (${controller.hiddenCategories.length})',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  });
+}
+
+
+
 
   Widget _buildCategoryList(List categories, String categoryName) {
     return Obx(() {

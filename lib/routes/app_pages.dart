@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:lat_prochain/view/hide_view.dart';
 import '../bindings/category_binding.dart';
 import '../view/category_screen.dart';
 import '../view/add_category_screen.dart';
@@ -18,5 +19,9 @@ class AppPages {
       page: () => AddCategoryScreen(),
       binding: CategoryBinding(),
     ),
+    GetPage(
+      name: AppRoutes.HIDE_VIEW,
+      page: () => HideView(),
+),
   ];
 }
