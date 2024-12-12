@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CategoryController extends GetxController with GetSingleTickerProviderStateMixin {
+class CategoryController extends GetxController with GetTickerProviderStateMixin {
   late TabController tabController;
 
   var categories = <Map<String, String>>[].obs;
   var hiddenCategories = <Map<String, String>>[].obs;
-  var filteredCategories = <Map<String, String>>[].obs; // Untuk menampilkan hasil pencarian dan filter
+  var filteredCategories = <Map<String, String>>[].obs; 
+  var searchController = TextEditingController();
+  var filteredLocations = <String>[].obs; 
 
   final TextEditingController codeController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -17,23 +19,30 @@ class CategoryController extends GetxController with GetSingleTickerProviderStat
 
   var selectedParentCategory = Rxn<String>();
   var selectedType = ''.obs;
-  var selectedFilter = Rxn<String>(); // Pilihan filter
+  var selectedFilter = Rxn<String>();
   var showMoreFields = false.obs;
   var isHidden = false.obs;
-  
 
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
 
-    // Awalnya, filteredCategories menampilkan semua kategori
+    // Inisialisasi data awal
+    filteredLocations.assignAll([
+      'Kandang Pengumbaran',
+      'Kandang Pengiang',
+      'Kandang Pullet',
+      'Kandang Pullet 2',
+      'Gudang Pakan',
+      'Kandang Songandak',
+    ]);
+
+    // Sinkronisasi filteredCategories dengan categories
     filteredCategories.assignAll(categories);
 
-    // Pantau perubahan pada categories untuk sinkronisasi otomatis
-    ever(categories, (_) {
-      searchCategories(''); // Reset pencarian dan filter saat data berubah
-    });
+    // Reset pencarian setiap kali categories berubah
+    ever(categories, (_) => searchCategories(''));
   }
 
   void toggleVisibility() {
@@ -49,7 +58,6 @@ class CategoryController extends GetxController with GetSingleTickerProviderStat
       'parentCategory': selectedParentCategory.value ?? '',
       'type': selectedType.value,
     });
-
     clearForm();
   }
 
@@ -84,20 +92,20 @@ class CategoryController extends GetxController with GetSingleTickerProviderStat
     };
 
     if (isHidden.value) {
-      hiddenCategories.add(category); // Simpan ke data hidden
+      hiddenCategories.add(category);
     } else {
-      categories.add(category); // Simpan ke data normal
+      categories.add(category);
     }
     clearForm();
+
+    // Setelah menyimpan, kembalikan isHidden ke false
+    isHidden.value = false;
   }
 
-  // Logika untuk pencarian kategori berdasarkan nama
   void searchCategories(String query) {
     if (query.isEmpty) {
-      // Jika query kosong, tampilkan semua kategori
       filteredCategories.assignAll(categories);
     } else {
-      // Filter kategori berdasarkan nama (case-insensitive)
       final lowerCaseQuery = query.toLowerCase();
       filteredCategories.assignAll(
         categories.where((category) {
@@ -108,14 +116,11 @@ class CategoryController extends GetxController with GetSingleTickerProviderStat
     }
   }
 
-  // Logika untuk filter berdasarkan tipe
   void filterCategories(String type) {
-    selectedFilter.value = type; // Simpan filter yang dipilih
+    selectedFilter.value = type;
     if (type.isEmpty) {
-      // Jika tidak ada filter, tampilkan semua kategori
       filteredCategories.assignAll(categories);
     } else {
-      // Filter kategori berdasarkan tipe
       filteredCategories.assignAll(
         categories.where((category) => category['type'] == type),
       );
@@ -131,20 +136,25 @@ class CategoryController extends GetxController with GetSingleTickerProviderStat
     descriptionController.dispose();
     pointPriceController.dispose();
     priceIncreaseController.dispose();
+    searchController.dispose();
     super.onClose();
   }
 
+  void addHiddenCategory(Map<String, String> category) {
+    hiddenCategories.add(category);
+  }
 
-void addHiddenCategory(Map<String, String> category) {
-  hiddenCategories.add(category);
-}
+  void removeHiddenCategory(Map<String, String> category) {
+    hiddenCategories.remove(category);
+  }
 
-void removeHiddenCategory(Map<String, String> category) {
-  hiddenCategories.remove(category);
-}
+  void clearHiddenCategories() {
+    hiddenCategories.clear();
+  }
 
-void clearHiddenCategories() {
-  hiddenCategories.clear();
-}
-
+  void unhideCategory(Map<String, String> category) {
+    hiddenCategories.remove(category); // Hapus dari kategori tersembunyi
+    categories.add(category); // Tambahkan ke kategori biasa
+    filteredCategories.assignAll(categories); // Sinkronisasi data yang ditampilkan
+  }
 }

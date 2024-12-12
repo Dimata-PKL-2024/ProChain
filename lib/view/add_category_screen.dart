@@ -121,99 +121,146 @@ class AddCategoryScreen extends StatelessWidget {
     );
   }
 
-AppBar _buildAppBar() {
-  return AppBar(
-    backgroundColor: Colors.white,
-    elevation: 1,
-    centerTitle: true,
-    title: const Text(
-      'Tambah Kategori',
-      style: TextStyle(
-        color: Color(0xFF000000),
-        fontSize: 15,
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    leading: TextButton(
-      onPressed: () {
-        Get.back();
-      },
-      child: const Text(
-        'Batal',
+  AppBar _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 1,
+      centerTitle: true,
+      title: const Text(
+        'Tambah Kategori',
         style: TextStyle(
-          color: Color(0xFF6200EE),
-          fontSize: 13,
+          color: Color(0xFF000000),
+          fontSize: 15,
           fontFamily: 'Inter',
-          fontWeight: FontWeight.normal,
+          fontWeight: FontWeight.bold,
         ),
       ),
-    ),
-    actions: [
-      Obx(() => IconButton(
-            icon: Icon(
-              controller.isHidden.value
-                  ? Icons.visibility_off
-                  : Icons.visibility,
-              color: Colors.black,
+      leading: TextButton(
+        onPressed: () {
+          Get.back();
+        },
+        child: const Text(
+          'Batal',
+          style: TextStyle(
+            color: Color(0xFF6200EE),
+            fontSize: 13,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+      actions: [
+        Obx(() => IconButton(
+              icon: Icon(
+                controller.isHidden.value
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+                color: Colors.black,
+              ),
+onPressed: () {
+  controller.toggleVisibility();
+  if (controller.isHidden.value) {
+    showDialog(
+      context: Get.context!,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Mode Hide',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF2E2E2E),
+              ),
             ),
-            onPressed: () {
-              controller.toggleVisibility();
-              showDialog(
-                context: Get.context!,
-                builder: (context) => AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
-                  contentPadding: const EdgeInsets.all(24),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        controller.isHidden.value ? 'Mode Hide' : 'Mode Normal',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2E2E2E),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        controller.isHidden.value
-                            ? 'Kategori ini telah disembunyikan!'
-                            : 'Kategori ini telah ditampilkan kembali di daftar anda!',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF2E2E2E),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF5F3DC4),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: const Text(
-                          'Selesai',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+            const SizedBox(height: 12),
+            const Text(
+              'Kategori ini telah disembunyikan!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(0xFF2E2E2E),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF5F3DC4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              );
-            },
-          )),
-    ],
-  );
-}
-
+              ),
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text(
+                'Selesai',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  } else {
+    showDialog(
+      context: Get.context!,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Mode Normal',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF2E2E2E),
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Kategori ini telah kembali ke mode normal!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(0xFF2E2E2E),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF5F3DC4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text(
+                'Selesai',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+},
+      )),
+      ],
+    );
+  }
 
   Widget _buildTextField({
     required TextEditingController controller,
@@ -276,71 +323,71 @@ AppBar _buildAppBar() {
     );
   }
 
-Widget _buildChoiceChips({required CategoryController controller}) {
-  return Row(
-    children: [
-      Expanded(
-        child: ChoiceChip(
-          label: const Text('Inventory Items'),
-          selected: controller.selectedType.value == 'Inventory Items',
-          selectedColor: const Color(0xFF6200EE),
-          labelStyle: TextStyle(
-            color: controller.selectedType.value == 'Inventory Items'
-                ? Colors.white
-                : Colors.black,
+  Widget _buildChoiceChips({required CategoryController controller}) {
+    return Row(
+      children: [
+        Expanded(
+          child: ChoiceChip(
+            label: const Text('Inventory Items'),
+            selected: controller.selectedType.value == 'Inventory Items',
+            selectedColor: const Color(0xFF6200EE),
+            labelStyle: TextStyle(
+              color: controller.selectedType.value == 'Inventory Items'
+                  ? Colors.white
+                  : Colors.black,
+            ),
+            onSelected: (_) => controller.updateSelectedType('Inventory Items'),
+            checkmarkColor: Colors.white,
           ),
-          onSelected: (_) => controller.updateSelectedType('Inventory Items'),
-          checkmarkColor: Colors.white,
         ),
-      ),
-      const SizedBox(width: 8),
-      Expanded(
-        child: ChoiceChip(
-          label: const Text('Sales Items'),
-          selected: controller.selectedType.value == 'Sales Items',
-          selectedColor: const Color(0xFF6200EE),
-          labelStyle: TextStyle(
-            color: controller.selectedType.value == 'Sales Items'
-                ? Colors.white
-                : Colors.black,
+        const SizedBox(width: 8),
+        Expanded(
+          child: ChoiceChip(
+            label: const Text('Sales Items'),
+            selected: controller.selectedType.value == 'Sales Items',
+            selectedColor: const Color(0xFF6200EE),
+            labelStyle: TextStyle(
+              color: controller.selectedType.value == 'Sales Items'
+                  ? Colors.white
+                  : Colors.black,
+            ),
+            onSelected: (_) => controller.updateSelectedType('Sales Items'),
+            checkmarkColor: Colors.white,
           ),
-          onSelected: (_) => controller.updateSelectedType('Sales Items'),
-          checkmarkColor: Colors.white,
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   Widget _buildSaveButton() {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-      controller.saveCategory();
-      if (controller.isHidden.value) {
-        Get.toNamed('/hide-view'); // Redirect ke Hide View
-      } else {
-        Get.toNamed('/category'); // Redirect ke Category View
-      }
+          controller.saveCategory();
+          if (controller.isHidden.value) {
+            Get.toNamed('/hide-view'); // Redirect ke Hide View
+          } else {
+            Get.toNamed('/category'); // Redirect ke Category View
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF6200EE),
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 12),
         ),
         child: const Text(
           'Simpan',
           style: TextStyle(
-            fontSize: 14,
-            color: Colors.white,
+            fontSize: 16,
             fontFamily: 'Inter',
-            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),
     );
   }
 }
+
 
 class _MoreRow extends StatelessWidget {
   final bool isExpanded;

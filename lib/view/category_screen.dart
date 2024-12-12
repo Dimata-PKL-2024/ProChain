@@ -45,7 +45,8 @@ class CategoryScreen extends StatelessWidget {
             },
             backgroundColor: const Color(0xFF5F3DC4),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100), // Membuatnya bulat sempurna
+              borderRadius:
+                  BorderRadius.circular(100), // Membuatnya bulat sempurna
             ),
             child: const Icon(Icons.add, color: Colors.white),
           );
@@ -64,6 +65,9 @@ class CategoryScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF5F3DC4),
       elevation: 0,
       centerTitle: true,
+      iconTheme: const IconThemeData(
+        color: Colors.white, // Mengubah warna burger button menjadi putih
+      ),
       bottom: TabBar(
         controller: controller.tabController,
         labelColor: Colors.white,
@@ -113,13 +117,12 @@ class CategoryScreen extends StatelessWidget {
     );
   }
 
-Widget _buildSearchAndFilter(CategoryController controller) {
-  return Obx(() {
-    if (controller.categories.isEmpty) {
-      return const SizedBox.shrink(); // Tidak tampil jika tidak ada kategori
-    }
-    return Column(
-      children: [
+  Widget _buildSearchAndFilter(CategoryController controller) {
+    return Obx(() {
+      if (controller.categories.isEmpty) {
+        return const SizedBox.shrink(); // Tidak tampil jika tidak ada kategori
+      }
+      return Column(children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -133,15 +136,16 @@ Widget _buildSearchAndFilter(CategoryController controller) {
                   ),
                   child: TextField(
                     decoration: InputDecoration(
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
                       hintText: 'Cari kategori...',
                       hintStyle: TextStyle(color: Colors.grey.shade600),
                       border: InputBorder.none,
                       prefixIcon: const Icon(Icons.search, color: Colors.grey),
                     ),
                     onChanged: (value) {
-                      controller.searchCategories(value); // Filter kategori berdasarkan pencarian
+                      controller.searchCategories(
+                          value); // Filter kategori berdasarkan pencarian
                     },
                   ),
                 ),
@@ -208,33 +212,59 @@ Widget _buildSearchAndFilter(CategoryController controller) {
           ),
         ),
         const SizedBox(height: 8),
-        // Tambahkan "Disembunyikan" dengan ikon
-        GestureDetector(
-          onTap: () {
-            Get.toNamed(AppRoutes.HIDE_VIEW); // Navigasi ke halaman hide view
-          },
-          child: Row(
-            children: [
-              const Icon(Icons.visibility_off, color: Colors.grey),
-              const SizedBox(width: 8),
-              Text(
-                'Disembunyikan (${controller.hiddenCategories.length})',
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
+// Tambahkan "Disembunyikan" dengan ikon di sebelah kiri
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: GestureDetector(
+            onTap: () {
+              // Aksi saat "Disembunyikan" diklik
+              Get.toNamed(AppRoutes.HIDE_VIEW); // Ganti dengan aksi yang sesuai
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 4.0,
+                  horizontal: 16.0), // Menurunkan sedikit jarak vertikal
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(1.0), // Membuat sudut membulat
+                border: Border(
+                  top: BorderSide(
+                      color: Colors.grey.shade400, width: 1.0), // Garis atas
+                  bottom: BorderSide(
+                      color: Colors.grey.shade400, width: 1.0), // Garis bawah
                 ),
               ),
-            ],
+              child: Row(
+                children: [
+                  const Icon(Icons.visibility_off, color: Colors.grey),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Disembunyikan',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  // Nomor di kanan
+                  Text(
+                    '(${controller.hiddenCategories.length})',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Color.fromARGB(255, 33, 30, 247),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-      ],
-    );
-  });
-}
-
-
-
+      ]);
+    });
+  }
 
   Widget _buildCategoryList(List categories, String categoryName) {
     return Obx(() {
@@ -258,7 +288,8 @@ Widget _buildSearchAndFilter(CategoryController controller) {
               borderRadius: BorderRadius.circular(10),
             ),
             child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               leading: CircleAvatar(
                 backgroundColor: const Color(0xFF5F3DC4),
                 child: const Icon(Icons.category, color: Colors.white),
@@ -324,7 +355,8 @@ class EmptyCategoryWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
               icon: const Icon(Icons.add, color: Colors.white),
               label: const Text(
