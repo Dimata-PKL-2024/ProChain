@@ -6,9 +6,8 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
 
   var categories = <Map<String, String>>[].obs;
   var hiddenCategories = <Map<String, String>>[].obs;
-  var filteredCategories = <Map<String, String>>[].obs; 
+  var filteredCategories = <Map<String, String>>[].obs;
   var searchController = TextEditingController();
-  var filteredLocations = <String>[].obs; 
 
   final TextEditingController codeController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -23,26 +22,22 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
   var showMoreFields = false.obs;
   var isHidden = false.obs;
 
+  var locations = <String>["Kandang Pengumbaran", "Kandang Pengiang", "Kandang Pullet", "Kandang Pullet 2", "Gudang Pakan", "Kandang Songandak"].obs;
+  var filteredLocations = <String>[].obs;
+
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
-
-    // Inisialisasi data awal
-    filteredLocations.assignAll([
-      'Kandang Pengumbaran',
-      'Kandang Pengiang',
-      'Kandang Pullet',
-      'Kandang Pullet 2',
-      'Gudang Pakan',
-      'Kandang Songandak',
-    ]);
 
     // Sinkronisasi filteredCategories dengan categories
     filteredCategories.assignAll(categories);
 
     // Reset pencarian setiap kali categories berubah
     ever(categories, (_) => searchCategories(''));
+
+    // Sinkronisasi filteredLocations dengan locations
+    filteredLocations.assignAll(locations);
   }
 
   void toggleVisibility() {
@@ -116,6 +111,17 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
     }
   }
 
+  void searchLocations(String query) {
+    if (query.isEmpty) {
+      filteredLocations.assignAll(locations);
+    } else {
+      final lowerCaseQuery = query.toLowerCase();
+      filteredLocations.assignAll(
+        locations.where((location) => location.toLowerCase().contains(lowerCaseQuery)),
+      );
+    }
+  }
+
   void filterCategories(String type) {
     selectedFilter.value = type;
     if (type.isEmpty) {
@@ -155,6 +161,6 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
   void unhideCategory(Map<String, String> category) {
     hiddenCategories.remove(category); // Hapus dari kategori tersembunyi
     categories.add(category); // Tambahkan ke kategori biasa
-    filteredCategories.assignAll(categories); // Sinkronisasi data yang ditampilkan
+    filteredCategories.assignAll(categories); // Sinkronisasi data yang ditampilkan
   }
 }

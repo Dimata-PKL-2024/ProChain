@@ -13,6 +13,7 @@ class AddCategoryScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
               Center(
@@ -53,14 +54,76 @@ class AddCategoryScreen extends StatelessWidget {
                       label: 'Nama Kategori',
                     ),
                     const SizedBox(height: 16),
-                    Obx(() => _buildDropdown(
-                          label: 'Parent Kategori',
-                          value: controller.selectedParentCategory.value,
-                          items: ['Parent 1', 'Parent 2', 'Parent 3'],
-                          onChanged: (value) {
-                            controller.selectedParentCategory.value = value;
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Pilih Parent Kategori',
+                                    style: const TextStyle(
+                                        fontSize: 18, fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  TextField(
+                                    controller: controller.searchController,
+                                    onChanged: (value) {
+                                      controller.searchLocations(value);
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: 'Cari Lokasi',
+                                      prefixIcon: Icon(Icons.search),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Obx(() => ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: controller.filteredLocations.length,
+                                        itemBuilder: (context, index) {
+                                          final location = controller.filteredLocations[index];
+                                          return ListTile(
+                                            leading: Icon(Icons.location_on),
+                                            title: Text(location),
+                                            onTap: () {
+                                              controller.selectedParentCategory.value = location;
+                                              Navigator.pop(context);
+                                            },
+                                          );
+                                        },
+                                      )),
+                                ],
+                              ),
+                            );
                           },
-                        )),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(() => Text(
+                                  controller.selectedParentCategory.value ?? 'Pilih Parent Kategori',
+                                  style: TextStyle(color: Colors.black54),
+                                )),
+                            Icon(Icons.arrow_drop_down),
+                          ],
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     const Text(
                       "Tipe",
@@ -82,7 +145,7 @@ class AddCategoryScreen extends StatelessWidget {
                       controller: controller.descriptionController,
                       label: 'Keterangan',
                     ),
-                    const SizedBox(height: 16),
+const SizedBox(height: 16),
                     GestureDetector(
                       onTap: controller.toggleMoreFields,
                       child: Obx(() => _MoreRow(
@@ -121,7 +184,7 @@ class AddCategoryScreen extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppBar() {
+AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 1,
@@ -290,39 +353,6 @@ onPressed: () {
     );
   }
 
-  Widget _buildDropdown({
-    required String label,
-    required String? value,
-    required List<String> items,
-    required ValueChanged<String?> onChanged,
-  }) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 14,
-          color: Color(0xFFBDBDBD),
-        ),
-        border: const OutlineInputBorder(),
-      ),
-      value: value,
-      items: items.map((item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: const TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 14,
-            ),
-          ),
-        );
-      }).toList(),
-      onChanged: onChanged,
-    );
-  }
-
   Widget _buildChoiceChips({required CategoryController controller}) {
     return Row(
       children: [
@@ -387,8 +417,6 @@ onPressed: () {
     );
   }
 }
-
-
 class _MoreRow extends StatelessWidget {
   final bool isExpanded;
 

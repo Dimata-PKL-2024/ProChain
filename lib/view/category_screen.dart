@@ -30,7 +30,7 @@ class CategoryScreen extends StatelessWidget {
                 controller: controller.tabController,
                 children: [
                   _buildCategoryList(controller.filteredCategories, 'Kategori'),
-                  // untuk sub kategori, tambahkan di sini
+                  // untuk sub kategori, tamba'hkan di sini
                 ],
               );
             }),
@@ -117,102 +117,102 @@ class CategoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchAndFilter(CategoryController controller) {
-    return Obx(() {
-      if (controller.categories.isEmpty) {
-        return const SizedBox.shrink(); // Tidak tampil jika tidak ada kategori
-      }
-      return Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              // Search Box
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
+ Widget _buildSearchAndFilter(CategoryController controller) {
+  return Obx(() {
+    if (controller.categories.isEmpty && controller.hiddenCategories.isEmpty) {
+      return const SizedBox.shrink(); // Tidak tampil jika tidak ada kategori atau tersembunyi
+    }
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            // Search Box
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 16),
+                    hintText: 'Cari kategori...',
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
+                    border: InputBorder.none,
+                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
                   ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
-                      hintText: 'Cari kategori...',
-                      hintStyle: TextStyle(color: Colors.grey.shade600),
-                      border: InputBorder.none,
-                      prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                    ),
-                    onChanged: (value) {
-                      controller.searchCategories(
-                          value); // Filter kategori berdasarkan pencarian
-                    },
-                  ),
+                  onChanged: (value) {
+                    controller.searchCategories(
+                        value); // Filter kategori berdasarkan pencarian
+                  },
                 ),
               ),
-              const SizedBox(width: 8),
-              // Filter Icon
-              GestureDetector(
-                onTap: () {
-                  // Buka dialog atau bottom sheet untuk filter
-                  showModalBottomSheet(
-                    context: Get.context!,
-                    builder: (context) {
-                      return Container(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Filter Kategori',
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 12),
-                            ListTile(
-                              leading: const Icon(Icons.tune),
-                              title: const Text('Tipe 1'),
-                              onTap: () {
-                                controller.filterCategories('Type 1');
-                                Get.back();
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.tune),
-                              title: const Text('Tipe 2'),
-                              onTap: () {
-                                controller.filterCategories('Type 2');
-                                Get.back();
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.tune),
-                              title: const Text('Tipe 3'),
-                              onTap: () {
-                                controller.filterCategories('Type 3');
-                                Get.back();
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(Icons.tune, color: Colors.grey),
+            ),
+            const SizedBox(width: 8),
+            // Filter Icon
+            GestureDetector(
+              onTap: () {
+                // Buka dialog atau bottom sheet untuk filter
+                showModalBottomSheet(
+                  context: Get.context!,
+                  builder: (context) {
+                    return Container(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Filter Kategori',
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 12),
+                          ListTile(
+                            leading: const Icon(Icons.tune),
+                            title: const Text('Tipe 1'),
+                            onTap: () {
+                              controller.filterCategories('Type 1');
+                              Get.back();
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.tune),
+                            title: const Text('Tipe 2'),
+                            onTap: () {
+                              controller.filterCategories('Type 2');
+                              Get.back();
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.tune),
+                            title: const Text('Tipe 3'),
+                            onTap: () {
+                              controller.filterCategories('Type 3');
+                              Get.back();
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
                 ),
+                child: const Icon(Icons.tune, color: Colors.grey),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        const SizedBox(height: 8),
-// Tambahkan "Disembunyikan" dengan ikon di sebelah kiri
+      ),
+      const SizedBox(height: 8),
+      if (controller.hiddenCategories.isNotEmpty) // Cek jika ada kategori tersembunyi
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GestureDetector(
@@ -222,8 +222,7 @@ class CategoryScreen extends StatelessWidget {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(
-                  vertical: 4.0,
-                  horizontal: 16.0), // Menurunkan sedikit jarak vertikal
+                  vertical: 4.0, horizontal: 16.0), // Menurunkan sedikit jarak vertikal
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.circular(1.0), // Membuat sudut membulat
@@ -248,7 +247,6 @@ class CategoryScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Nomor di kanan
                   Text(
                     '(${controller.hiddenCategories.length})',
                     style: const TextStyle(
@@ -262,10 +260,9 @@ class CategoryScreen extends StatelessWidget {
             ),
           ),
         ),
-      ]);
-    });
-  }
-
+    ]);
+  });
+}
   Widget _buildCategoryList(List categories, String categoryName) {
     return Obx(() {
       if (categories.isEmpty) {
