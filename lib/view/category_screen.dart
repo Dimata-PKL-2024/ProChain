@@ -117,6 +117,8 @@ class CategoryScreen extends StatelessWidget {
     );
   }
 
+
+
  Widget _buildSearchAndFilter(CategoryController controller) {
   return Obx(() {
     if (controller.categories.isEmpty && controller.hiddenCategories.isEmpty) {

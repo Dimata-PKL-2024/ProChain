@@ -163,4 +163,6 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
     categories.add(category); // Tambahkan ke kategori biasa
     filteredCategories.assignAll(categories); // Sinkronisasi data yang ditampilkan
   }
+
+  
 }
