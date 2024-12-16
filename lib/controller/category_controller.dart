@@ -22,6 +22,8 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
   var showMoreFields = false.obs;
   var isHidden = false.obs;
 
+
+
   var locations = <String>["Kandang Pengumbaran", "Kandang Pengiang", "Kandang Pullet", "Kandang Pullet 2", "Gudang Pakan", "Kandang Songandak"].obs;
   var filteredLocations = <String>[].obs;
 
@@ -163,6 +165,17 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
     categories.add(category); // Tambahkan ke kategori biasa
     filteredCategories.assignAll(categories); // Sinkronisasi data yang ditampilkan
   }
+
+void deleteCategory(Map<String, String> category) {
+  categories.remove(category);
+  filteredCategories.assignAll(categories);
+}
+
+void hideCategory(Map<String, String> category) {
+  categories.remove(category);
+  hiddenCategories.add(category);
+  filteredCategories.assignAll(categories);
+}
 
   
 }

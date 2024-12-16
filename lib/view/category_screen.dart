@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/category_controller.dart';
 import '../routes/app_routes.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
 
 class CategoryScreen extends StatelessWidget {
   @override
@@ -265,46 +267,208 @@ class CategoryScreen extends StatelessWidget {
     ]);
   });
 }
-  Widget _buildCategoryList(List categories, String categoryName) {
-    return Obx(() {
-      if (categories.isEmpty) {
-        return Center(
-          child: Text(
-            'Belum ada $categoryName ditambahkan.',
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+
+Widget _buildCategoryList(List<Map<String, String>> categories, String tabName) {
+  return ListView.builder(
+    itemCount: categories.length,
+    itemBuilder: (context, index) {
+      final category = categories[index];
+      return Slidable(
+        key: Key(category['id'] ?? index.toString()),
+        endActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          extentRatio: 0.5,
+          children: [
+            // Tombol Hide
+            SlidableAction(
+              onPressed: (context) async {
+                final confirmHide = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.visibility_off,
+                              size: 60,
+                              color: const Color(0xFF5F3DC4),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Sembunyikan Kategori?',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Apakah Anda yakin ingin menyembunyikan kategori ${category['name'] ?? 'Tidak Bernama'}?',
+                              style: const TextStyle(fontSize: 14, color: Colors.grey),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(false),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.grey[300],
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  ),
+                                  child: const Text('Batal', style: TextStyle(color: Colors.black)),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(true),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: const Color(0xFF5F3DC4),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  ),
+                                  child: const Text('Sembunyikan', style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+                if (confirmHide == true) {
+                  Get.find<CategoryController>().hideCategory(category);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Kategori "${category['name']}" disembunyikan')),
+                  );
+                }
+              },
+              backgroundColor: const Color(0xFF5F3DC4),
+              foregroundColor: Colors.white,
+              icon: Icons.visibility_off,
+              label: 'Hide',
+            ),
+            // Tombol Delete
+            SlidableAction(
+              onPressed: (context) async {
+                final confirmDelete = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.delete,
+                              size: 60,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Hapus Kategori?',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Apakah Anda yakin ingin menghapus kategori ${category['name'] ?? 'Tidak Bernama'}?',
+                              style: const TextStyle(fontSize: 14, color: Colors.grey),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(false),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.grey[300],
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  ),
+                                  child: const Text('Batal', style: TextStyle(color: Colors.black)),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(true),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  ),
+                                  child: const Text('Hapus', style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+                if (confirmDelete == true) {
+                  Get.find<CategoryController>().deleteCategory(category);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Kategori "${category['name']}" dihapus')),
+                  );
+                }
+              },
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: 'Delete',
+            ),
+          ],
+        ),
+        child: Card(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: ListTile(
+            title: Text(
+              category['name'] ?? 'Kategori Tidak Bernama',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text('Type: ${category['type'] ?? 'Tidak Ada Kode'}'),
+            trailing: Text(category['code'] ?? ''),
           ),
-        );
-      }
-      return ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        itemCount: categories.length,
-        itemBuilder: (context, index) {
-          final category = categories[index];
-          return Card(
-            elevation: 4,
-            margin: const EdgeInsets.only(bottom: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: ListTile(
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              leading: CircleAvatar(
-                backgroundColor: const Color(0xFF5F3DC4),
-                child: const Icon(Icons.category, color: Colors.white),
-              ),
-              title: Text(
-                category['name'] ?? 'Kategori Tidak Bernama',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text('Type: ${category['type'] ?? 'Tidak Ada Kode'}'),
-              trailing: Text(category['code'] ?? ''),
-            ),
-          );
-        },
+        ),
       );
-    });
-  }
+    },
+  );
+}
+
+
+
 }
 
 class EmptyCategoryWidget extends StatelessWidget {
