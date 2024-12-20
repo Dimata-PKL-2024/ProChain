@@ -15,6 +15,13 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController pointPriceController = TextEditingController();
   final TextEditingController priceIncreaseController = TextEditingController();
+  final documentNumberController = TextEditingController();
+  final locationController = TextEditingController();
+  final categoryController = TextEditingController();
+  final dateController = TextEditingController();
+  final statusController = TextEditingController();
+  final sortFieldController = TextEditingController();
+  bool isChecked = false;
 
   var selectedParentCategory = Rxn<String>();
   var selectedType = ''.obs;
@@ -22,6 +29,20 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
   var showMoreFields = false.obs;
   var isHidden = false.obs;
 
+var filterNumber = ''.obs;
+  var filterLocation = ''.obs;
+  var filterCategory = ''.obs;
+  var filterDate = ''.obs;
+
+  void applyFilters() {
+    // Logika untuk menerapkan filter berdasarkan inputan
+    filteredCategories.value = categories.where((category) {
+      return (filterNumber.isEmpty || category['number'] == filterNumber.value) &&
+             (filterLocation.isEmpty || category['location'] == filterLocation.value) &&
+             (filterCategory.isEmpty || category['name'] == filterCategory.value) &&
+             (filterDate.isEmpty || category['date'] == filterDate.value);
+    }).toList();
+  }
 
 
   var locations = <String>["Kandang Pengumbaran", "Kandang Pengiang", "Kandang Pullet", "Kandang Pullet 2", "Gudang Pakan", "Kandang Songandak"].obs;
@@ -135,7 +156,7 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
     }
   }
 
-  @override
+@override
   void onClose() {
     tabController.dispose();
     codeController.dispose();
@@ -144,7 +165,12 @@ class CategoryController extends GetxController with GetTickerProviderStateMixin
     descriptionController.dispose();
     pointPriceController.dispose();
     priceIncreaseController.dispose();
-    searchController.dispose();
+    documentNumberController.dispose();
+    locationController.dispose();
+    categoryController.dispose();
+    dateController.dispose();
+    statusController.dispose();
+    sortFieldController.dispose();
     super.onClose();
   }
 
@@ -176,6 +202,7 @@ void hideCategory(Map<String, String> category) {
   hiddenCategories.add(category);
   filteredCategories.assignAll(categories);
 }
+
 
   
 }

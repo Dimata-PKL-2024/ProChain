@@ -454,6 +454,9 @@ Widget _buildCategoryList(List<Map<String, String>> categories, String tabName) 
         child: Card(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
+            onTap: () {
+              Get.toNamed(AppRoutes.EDIT_CATEGORY, arguments: category);
+            },
             title: Text(
               category['name'] ?? 'Kategori Tidak Bernama',
               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -466,6 +469,7 @@ Widget _buildCategoryList(List<Map<String, String>> categories, String tabName) 
     },
   );
 }
+
 
 
 
