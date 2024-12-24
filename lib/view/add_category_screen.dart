@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../controller/category_controller.dart';
 
 class AddCategoryScreen extends StatelessWidget {
+  
   final CategoryController controller = Get.put(CategoryController());
 
   @override
@@ -16,7 +17,7 @@ class AddCategoryScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              Center(
+              const Center(
                 child: Text(
                   'Silahkan menambahkan Kategori',
                   style: TextStyle(
@@ -37,7 +38,7 @@ class AddCategoryScreen extends StatelessWidget {
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
                       blurRadius: 8,
-                      offset: Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
@@ -54,89 +55,98 @@ class AddCategoryScreen extends StatelessWidget {
                       label: 'Nama Kategori',
                     ),
                     const SizedBox(height: 16),
-GestureDetector(
-  onTap: () {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // Untuk memastikan modal sheet dapat diskrol jika konten panjang
-      builder: (context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Pilih Parent Kategori',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: controller.searchController,
-                  onChanged: (value) {
-                    controller.searchLocations(value);
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Cari Lokasi',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Obx(
-                  () => ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.5, // Maks tinggi 50% layar
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: controller.filteredLocations.length,
-                      itemBuilder: (context, index) {
-                        final location = controller.filteredLocations[index];
-                        return ListTile(
-                          leading: Icon(Icons.location_on),
-                          title: Text(location),
-                          onTap: () {
-                            controller.selectedParentCategory.value = location;
-                            Navigator.pop(context);
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled:
+                              true, 
+                          builder: (context) {
+                            return SingleChildScrollView(
+                              child: Container(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Pilih Parent Kategori',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    TextField(
+                                      controller: controller.searchController,
+                                      onChanged: (value) {
+                                        controller.searchLocations(value);
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: 'Cari Lokasi',
+                                        prefixIcon: const Icon(Icons.search),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Obx(
+                                      () => ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          maxHeight: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.5, // Maks tinggi 50% layar
+                                        ),
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: controller
+                                              .filteredLocations.length,
+                                          itemBuilder: (context, index) {
+                                            final location = controller
+                                                .filteredLocations[index];
+                                            return ListTile(
+                                              leading: const Icon(Icons.location_on),
+                                              title: Text(location),
+                                              onTap: () {
+                                                controller
+                                                    .selectedParentCategory
+                                                    .value = location;
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           },
                         );
                       },
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(() => Text(
+                                  controller.selectedParentCategory.value ??
+                                      'Pilih Parent Kategori',
+                                  style: const TextStyle(color: Colors.black54),
+                                )),
+                            const Icon(Icons.arrow_drop_down),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  },
-  child: Container(
-    padding: const EdgeInsets.all(16.0),
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.grey),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Obx(() => Text(
-              controller.selectedParentCategory.value ?? 'Pilih Parent Kategori',
-              style: TextStyle(color: Colors.black54),
-            )),
-        Icon(Icons.arrow_drop_down),
-      ],
-    ),
-  ),
-),
-
                     const SizedBox(height: 16),
                     const Text(
                       "Tipe",
@@ -158,7 +168,7 @@ GestureDetector(
                       controller: controller.descriptionController,
                       label: 'Keterangan',
                     ),
-const SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     GestureDetector(
                       onTap: controller.toggleMoreFields,
                       child: Obx(() => _MoreRow(
@@ -197,7 +207,7 @@ const SizedBox(height: 16),
     );
   }
 
-AppBar _buildAppBar() {
+  AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 1,
@@ -233,107 +243,109 @@ AppBar _buildAppBar() {
                     : Icons.visibility,
                 color: Colors.black,
               ),
-onPressed: () {
-  controller.toggleVisibility();
-  if (controller.isHidden.value) {
-    showDialog(
-      context: Get.context!,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        contentPadding: const EdgeInsets.all(24),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Mode Hide',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2E2E2E),
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Kategori ini telah disembunyikan!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFF2E2E2E),
-              ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF5F3DC4),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
               onPressed: () {
-                Get.back();
+                controller.toggleVisibility();
+                if (controller.isHidden.value) {
+                  showDialog(
+                    context: Get.context!,
+                    builder: (context) => AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      contentPadding: const EdgeInsets.all(24),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'Mode Hide',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2E2E2E),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Kategori ini telah disembunyikan!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF2E2E2E),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF5F3DC4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text(
+                              'Selesai',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  showDialog(
+                    context: Get.context!,
+                    builder: (context) => AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      contentPadding: const EdgeInsets.all(24),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'Mode Normal',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2E2E2E),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Kategori ini telah kembali ke mode normal!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF2E2E2E),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF5F3DC4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text(
+                              'Selesai',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
               },
-              child: const Text(
-                'Selesai',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  } else {
-    showDialog(
-      context: Get.context!,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        contentPadding: const EdgeInsets.all(24),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Mode Normal',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2E2E2E),
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Kategori ini telah kembali ke mode normal!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFF2E2E2E),
-              ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF5F3DC4),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text(
-                'Selesai',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-},
-      )),
+            )),
       ],
     );
   }
@@ -409,9 +421,9 @@ onPressed: () {
         onPressed: () {
           controller.saveCategory();
           if (controller.isHidden.value) {
-            Get.toNamed('/hide-view'); // Redirect ke Hide View
+            Get.toNamed('/hide-view');
           } else {
-            Get.toNamed('/category'); // Redirect ke Category View
+            Get.toNamed('/category');
           }
         },
         style: ElevatedButton.styleFrom(
@@ -430,6 +442,7 @@ onPressed: () {
     );
   }
 }
+
 class _MoreRow extends StatelessWidget {
   final bool isExpanded;
 

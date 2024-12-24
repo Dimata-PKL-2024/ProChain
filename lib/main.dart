@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: AppPages.INITIAL, // Rute awal diambil dari AppPages
-      getPages: AppPages.routes, // Rute diambil dari AppPages
+      initialRoute: AppPages.initial, 
+      getPages: AppPages.routes, 
     );
   }
 }

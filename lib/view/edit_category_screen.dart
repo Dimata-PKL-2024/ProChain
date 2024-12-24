@@ -16,10 +16,10 @@ class EditCategoryScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              Center(
+              const Center(
                 child: Text(
                   'Edit kategori yang dipilih',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     color: Color(0xFF7A7A7A),
                     fontFamily: 'Inter',

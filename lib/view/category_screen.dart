@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/category_controller.dart';
@@ -6,6 +8,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 
 class CategoryScreen extends StatelessWidget {
+  const CategoryScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Ambil instance controller dari Binding
@@ -16,13 +20,13 @@ class CategoryScreen extends StatelessWidget {
       drawer: _buildDrawer(),
       body: Column(
         children: [
-          _buildSearchAndFilter(controller), // Tambahkan pencarian dan filter
+          _buildSearchAndFilter(controller), 
           Expanded(
             child: Obx(() {
               if (controller.categories.isEmpty) {
                 return TabBarView(
                   controller: controller.tabController,
-                  children: [
+                  children: const [
                     EmptyCategoryWidget(categoryName: 'Kategori'),
                     EmptyCategoryWidget(categoryName: 'Sub kategori'),
                   ],
@@ -32,7 +36,6 @@ class CategoryScreen extends StatelessWidget {
                 controller: controller.tabController,
                 children: [
                   _buildCategoryList(controller.filteredCategories, 'Kategori'),
-                  // untuk sub kategori, tamba'hkan di sini
                 ],
               );
             }),
@@ -48,7 +51,7 @@ class CategoryScreen extends StatelessWidget {
             backgroundColor: const Color(0xFF5F3DC4),
             shape: RoundedRectangleBorder(
               borderRadius:
-                  BorderRadius.circular(100), // Membuatnya bulat sempurna
+                  BorderRadius.circular(100),
             ),
             child: const Icon(Icons.add, color: Colors.white),
           );
@@ -68,7 +71,7 @@ class CategoryScreen extends StatelessWidget {
       elevation: 0,
       centerTitle: true,
       iconTheme: const IconThemeData(
-        color: Colors.white, // Mengubah warna burger button menjadi putih
+        color: Colors.white, 
       ),
       bottom: TabBar(
         controller: controller.tabController,
@@ -104,14 +107,13 @@ class CategoryScreen extends StatelessWidget {
             leading: const Icon(Icons.category),
             title: const Text('Kategori'),
             onTap: () {
-              Get.offNamed(AppRoutes.CATEGORY); // Navigasi ke halaman kategori
+              Get.offNamed(AppRoutes.CATEGORY); 
             },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Pengaturan'),
             onTap: () {
-              // Tambahkan navigasi ke halaman pengaturan jika ada
             },
           ),
         ],
@@ -124,14 +126,13 @@ class CategoryScreen extends StatelessWidget {
  Widget _buildSearchAndFilter(CategoryController controller) {
   return Obx(() {
     if (controller.categories.isEmpty && controller.hiddenCategories.isEmpty) {
-      return const SizedBox.shrink(); // Tidak tampil jika tidak ada kategori atau tersembunyi
+      return const SizedBox.shrink();
     }
     return Column(children: [
       Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            // Search Box
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -148,103 +149,324 @@ class CategoryScreen extends StatelessWidget {
                     prefixIcon: const Icon(Icons.search, color: Colors.grey),
                   ),
                   onChanged: (value) {
-                    controller.searchCategories(
-                        value); // Filter kategori berdasarkan pencarian
+                    controller.searchCategories(value);
                   },
                 ),
               ),
             ),
             const SizedBox(width: 8),
-            // Filter Icon
             GestureDetector(
               onTap: () {
-                // Buka dialog atau bottom sheet untuk filter
                 showModalBottomSheet(
                   context: Get.context!,
                   builder: (context) {
-                    return Container(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Filter Kategori',
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 12),
-                          ListTile(
-                            leading: const Icon(Icons.tune),
-                            title: const Text('Tipe 1'),
-                            onTap: () {
-                              controller.filterCategories('Type 1');
-                              Get.back();
-                            },
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.tune),
-                            title: const Text('Tipe 2'),
-                            onTap: () {
-                              controller.filterCategories('Type 2');
-                              Get.back();
-                            },
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.tune),
-                            title: const Text('Tipe 3'),
-                            onTap: () {
-                              controller.filterCategories('Type 3');
-                              Get.back();
-                            },
-                          ),
-                        ],
+                    return SingleChildScrollView(
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 242, 243, 243),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Text(
+                                'Filter Kategori',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Nomor Dokumen",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Inter',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                SizedBox(
+                                  width: 600,
+                                  height: 40,
+                                  child: TextField(
+                                    controller: controller.documentNumberController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Nomor Dokumen',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  "Lokasi",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Inter',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                SizedBox(
+                                  width: 600,
+                                  height: 40,
+                                  child: TextField(
+                                    controller: controller.locationController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Lokasi',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  "Kategori",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Inter',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                SizedBox(
+                                  width: 600,
+                                  height: 40,
+                                  child: TextField(
+                                    controller: controller.categoryController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Kategori',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Tanggal",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Inter',
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      SizedBox(
+                                        width: 200,
+                                        height: 40,
+                                        child: TextField(
+                                          controller: controller.dateController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Tanggal',
+                                            prefixIcon: Padding(
+                                              padding: EdgeInsets.all(10.0),
+                                              child: Icon(Icons.date_range),
+                                            ),
+                                            border: OutlineInputBorder(),
+                                            contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                                          ),
+                                          readOnly: true,
+                                          onTap: () async {
+                                            DateTime? pickedDate = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(1900),
+                                              lastDate: DateTime(2101),
+                                            );
+                                            if (pickedDate != null) {
+                                              controller.dateController.text =
+                                                  "${pickedDate.toLocal()}".split(' ')[0];
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "Semua",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Inter',
+                                      ),
+                                    ),
+                                    Checkbox(
+                                      value: controller.isChecked,
+                                      onChanged: (bool? value) {
+                                        controller.isChecked = value ?? false;
+                                      },
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            // Status Filter
+                            const SizedBox(height: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Status",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Inter',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: controller.statusController.text == 'Draft' ? Colors.purple : const Color.fromARGB(255, 247, 245, 245),
+                                      ),
+                                      onPressed: () {
+                                        controller.statusController.text = 'Draft';
+                                      },
+                                      child: const Text('Draft'),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: controller.statusController.text == 'Final' ? Colors.purple : const Color.fromARGB(255, 250, 249, 249),
+                                      ),
+                                      onPressed: () {
+                                        controller.statusController.text = 'Final';
+                                      },
+                                      child: const Text('Final'),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: controller.statusController.text == 'Closed' ? Colors.purple : const Color.fromARGB(255, 248, 247, 247),
+                                      ),
+                                      onPressed: () {
+                                        controller.statusController.text = 'Closed';
+                                      },
+                                      child: const Text('Closed'),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: controller.statusController.text == 'Posted' ? Colors.purple : const Color.fromARGB(255, 250, 249, 249),
+                                      ),
+                                      onPressed: () {
+                                        controller.statusController.text = 'Posted';
+                                      },
+                                      child: const Text('Posted'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            // Sorting Filter
+                            const SizedBox(height: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Urut Berdasarkan",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Inter',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: controller.statusController.text == 'Nomor' ? Colors.purple : const Color.fromARGB(255, 247, 245, 245),
+                                      ),
+                                      onPressed: () {
+                                        controller.statusController.text = 'Nomor';
+                                      },
+                                      child: const Text('Nomor'),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: controller.statusController.text == 'Tanggal' ? Colors.purple : const Color.fromARGB(255, 250, 249, 249),
+                                      ),
+                                      onPressed: () {
+                                        controller.statusController.text = 'Tanggal';
+                                      },
+                                      child: const Text('Tanggal'),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: controller.statusController.text == 'Lokasi' ? Colors.purple : const Color.fromARGB(255, 248, 247, 247),
+                                      ),
+                                      onPressed: () {
+                                        controller.statusController.text = 'Lokasi';
+                                      },
+                                      child: const Text('Lokasi'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
                 );
               },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.tune, color: Colors.grey),
-              ),
+              child: const Icon(Icons.filter_list, color: Colors.grey),
             ),
           ],
         ),
       ),
       const SizedBox(height: 8),
-      if (controller.hiddenCategories.isNotEmpty) // Cek jika ada kategori tersembunyi
+      if (controller.hiddenCategories.isNotEmpty)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GestureDetector(
             onTap: () {
-              // Aksi saat "Disembunyikan" diklik
-              Get.toNamed(AppRoutes.HIDE_VIEW); // Ganti dengan aksi yang sesuai
+              Get.toNamed(AppRoutes.HIDE_VIEW);
             },
             child: Container(
               padding: const EdgeInsets.symmetric(
-                  vertical: 4.0, horizontal: 16.0), // Menurunkan sedikit jarak vertikal
+                  vertical: 4.0, horizontal: 16.0),
               decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(1.0), // Membuat sudut membulat
+                borderRadius: BorderRadius.circular(1.0),
                 border: Border(
-                  top: BorderSide(
-                      color: Colors.grey.shade400, width: 1.0), // Garis atas
-                  bottom: BorderSide(
-                      color: Colors.grey.shade400, width: 1.0), // Garis bawah
+                  top: BorderSide(color: Colors.grey.shade400, width: 1.0),
+                  bottom: BorderSide(color: Colors.grey.shade400, width: 1.0),
                 ),
               ),
               child: Row(
                 children: [
                   const Icon(Icons.visibility_off, color: Colors.grey),
                   const SizedBox(width: 8),
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       'Disembunyikan',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -267,6 +489,8 @@ class CategoryScreen extends StatelessWidget {
     ]);
   });
 }
+
+
 
 Widget _buildCategoryList(List<Map<String, String>> categories, String tabName) {
   return ListView.builder(
@@ -292,24 +516,24 @@ Widget _buildCategoryList(List<Map<String, String>> categories, String tabName) 
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.black26,
                               blurRadius: 10,
-                              offset: const Offset(0, 4),
+                              offset: Offset(0, 4),
                             ),
                           ],
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.visibility_off,
                               size: 60,
-                              color: const Color(0xFF5F3DC4),
+                              color: Color(0xFF5F3DC4),
                             ),
                             const SizedBox(height: 16),
-                            Text(
+                            const Text(
                               'Sembunyikan Kategori?',
                               style: TextStyle(
                                 fontSize: 18,
@@ -377,24 +601,24 @@ Widget _buildCategoryList(List<Map<String, String>> categories, String tabName) 
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.black26,
                               blurRadius: 10,
-                              offset: const Offset(0, 4),
+                              offset: Offset(0, 4),
                             ),
                           ],
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.delete,
                               size: 60,
                               color: Colors.red,
                             ),
                             const SizedBox(height: 16),
-                            Text(
+                            const Text(
                               'Hapus Kategori?',
                               style: TextStyle(
                                 fontSize: 18,
@@ -471,14 +695,12 @@ Widget _buildCategoryList(List<Map<String, String>> categories, String tabName) 
 }
 
 
-
-
 }
 
 class EmptyCategoryWidget extends StatelessWidget {
   final String categoryName;
 
-  const EmptyCategoryWidget({required this.categoryName});
+  const EmptyCategoryWidget({super.key, required this.categoryName});
 
   @override
   Widget build(BuildContext context) {
@@ -514,7 +736,6 @@ class EmptyCategoryWidget extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                // Navigasi menggunakan rute
                 Get.toNamed(AppRoutes.ADD_CATEGORY);
               },
               style: ElevatedButton.styleFrom(

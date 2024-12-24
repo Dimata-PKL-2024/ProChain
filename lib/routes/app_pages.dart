@@ -7,12 +7,12 @@ import '../view/edit_category_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
-  static const INITIAL = AppRoutes.CATEGORY;
+  static const initial = AppRoutes.CATEGORY;
 
   static final routes = [
     GetPage(
       name: AppRoutes.CATEGORY,
-      page: () => CategoryScreen(),
+      page: () => const CategoryScreen(),
       binding: CategoryBinding(),
     ),
     GetPage(
@@ -22,7 +22,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.HIDE_VIEW,
-      page: () => HideView(),
+      page: () => const HideView(),
 ),
     GetPage(
       name: AppRoutes.EDIT_CATEGORY,

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -12,8 +14,9 @@ class HideView extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        Get.offNamed('/category'); // Ganti '/category' dengan nama rute kategori
-        return false; // Mencegah aksi back default
+        Get.offNamed(
+            '/category'); 
+        return false; 
       },
       child: Scaffold(
         appBar: AppBar(
@@ -80,7 +83,6 @@ class HideView extends StatelessWidget {
             );
           }
 
-          // List kategori disembunyikan
           return ListView.builder(
             itemCount: controller.hiddenCategories.length,
             itemBuilder: (context, index) {
@@ -92,14 +94,14 @@ class HideView extends StatelessWidget {
                   motion: const DrawerMotion(),
                   extentRatio: 0.5,
                   children: [
-                    // Tombol Unhide
                     SlidableAction(
                       onPressed: (context) {
                         _showCustomDialog(
                           context,
                           icon: Icons.lock_open,
                           iconColor: const Color(0xFF5F3DC4),
-                          title: 'Apakah anda ingin mengembalikan kategori tersebut?',
+                          title:
+                              'Apakah anda ingin mengembalikan kategori tersebut?',
                           confirmButtonText: 'Lanjutkan',
                           confirmButtonColor: const Color(0xFF5F3DC4),
                           onConfirm: () {
@@ -112,14 +114,14 @@ class HideView extends StatelessWidget {
                       icon: Icons.visibility,
                       label: 'Show',
                     ),
-                    // Tombol Delete
                     SlidableAction(
                       onPressed: (context) {
                         _showCustomDialog(
                           context,
                           icon: Icons.delete_outline,
                           iconColor: Colors.red,
-                          title: 'Apakah anda yakin ingin menghapus kategori ini?',
+                          title:
+                              'Apakah anda yakin ingin menghapus kategori ini?',
                           confirmButtonText: 'Hapus',
                           confirmButtonColor: Colors.red,
                           onConfirm: () {
@@ -135,13 +137,15 @@ class HideView extends StatelessWidget {
                   ],
                 ),
                 child: Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   elevation: 4,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     title: Text(
                       category['name'] ?? 'Kategori Tidak Bernama',
                       style: const TextStyle(
@@ -150,7 +154,7 @@ class HideView extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      'Kode: ${category['code'] ?? ''}',
+                      'Type: ${category['type'] ?? ''}',
                       style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                     trailing: Text(
@@ -170,7 +174,6 @@ class HideView extends StatelessWidget {
     );
   }
 
-  // Fungsi untuk menampilkan dialog custom
   void _showCustomDialog(
     BuildContext context, {
     required IconData icon,

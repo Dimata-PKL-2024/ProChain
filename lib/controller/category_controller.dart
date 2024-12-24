@@ -35,7 +35,6 @@ var filterNumber = ''.obs;
   var filterDate = ''.obs;
 
   void applyFilters() {
-    // Logika untuk menerapkan filter berdasarkan inputan
     filteredCategories.value = categories.where((category) {
       return (filterNumber.isEmpty || category['number'] == filterNumber.value) &&
              (filterLocation.isEmpty || category['location'] == filterLocation.value) &&
@@ -116,7 +115,6 @@ var filterNumber = ''.obs;
     }
     clearForm();
 
-    // Setelah menyimpan, kembalikan isHidden ke false
     isHidden.value = false;
   }
 
@@ -187,9 +185,9 @@ var filterNumber = ''.obs;
   }
 
   void unhideCategory(Map<String, String> category) {
-    hiddenCategories.remove(category); // Hapus dari kategori tersembunyi
-    categories.add(category); // Tambahkan ke kategori biasa
-    filteredCategories.assignAll(categories); // Sinkronisasi data yang ditampilkan
+    hiddenCategories.remove(category); 
+    categories.add(category); 
+    filteredCategories.assignAll(categories); 
   }
 
 void deleteCategory(Map<String, String> category) {
