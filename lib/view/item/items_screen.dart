@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:lat_prochain/widgets/custom_drawer.dart';
 import '../../controller/item_controller.dart';
 import '../../routes/app_routes.dart';
 
@@ -12,13 +13,22 @@ class ItemsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<ItemController>();
 
-    return Scaffold(
-      appBar: AppBar(
+return Scaffold(
+  appBar: PreferredSize(
+    preferredSize: const Size.fromHeight(80), // Tinggi AppBar lebih besar
+    child: Container(
+      padding: const EdgeInsets.only(top: 10), // Tambahkan jarak di atas header
+      color: const Color(0xFF5F3DC4), // Warna latar belakang header
+      child: AppBar(
         title: const Text('Daftar Item', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF5F3DC4),
+        backgroundColor: Colors.transparent, // Transparan karena sudah dibungkus Container
         centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white), // Warna ikon burger putih
+        elevation: 0, 
       ),
-      drawer: _buildDrawer(), // Pindahkan drawer ke tingkat Scaffold
+    ),
+  ),
+      drawer: const CustomDrawer(), // Pindahkan drawer ke tingkat Scaffold
       body: Obx(() {
         if (controller.filteredItems.isEmpty) {
           return const EmptyItemWidget();
@@ -38,45 +48,7 @@ class ItemsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          Container(
-            height: 110,
-            decoration: const BoxDecoration(
-              color: Color(0xFF5F3DC4),
-            ),
-            child: const Center(
-              child: Text(
-                'PT. Dimata Sora Jayate',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          ListTile(
-            title: const Text('Kategori'),
-            onTap: () => Get.offNamed(AppRoutes.CATEGORY),
-          ),
-          ListTile(
-            title: const Text('Items'),
-            onTap: () => Get.offNamed(AppRoutes.ITEMS),
-          ),
-          ListTile(
-            title: const Text('Satuan / Unit'),
-            onTap: () => Get.offNamed(AppRoutes.UNIT),
-          ),
-        ],
-      ),
-    );
-  }
-
- Widget _buildItemList(List<Map<String, dynamic>> items) {
+Widget _buildItemList(List<Map<String, dynamic>> items) {
   return ListView.builder(
     itemCount: items.length,
     itemBuilder: (context, index) {
@@ -97,40 +69,112 @@ class ItemsScreen extends StatelessWidget {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
               icon: Icons.delete,
-              label: 'Delete',
+              label: 'Hapus',
             ),
           ],
         ),
-        child: Card(
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: ListTile(
-            leading: item['image'] != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.file(
-                      File(item['image']), // Gunakan path untuk gambar
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
+        child: GestureDetector(
+          // onTap: () {
+          //   Get.to(() => ItemDetailScreen(item: item));
+          // },
+          child: Card(
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                children: [
+                  // Gambar Item
+                  item['image'] != null && item['image'].isNotEmpty
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            File(item['image']),
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.image_not_supported,
+                            size: 24,
+                            color: Colors.grey,
+                          ),
+                        ),
+                  const SizedBox(width: 16),
+
+                  // Informasi Item
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['name'] ?? 'Item Tidak Bernama',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'SKU : ',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              TextSpan(
+                                text: item['sku'] ?? 'Tidak Ada SKU',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                : const Icon(Icons.image_not_supported, size: 50),
-            title: Text(
-              item['name'] ?? 'Item Tidak Bernama',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+
+                  // Stock dan Unit
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${item['stock']?.toString() ?? '0'}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${item['unit']?.toString() ?? 'Tidak Ada Unit'}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('SKU: ${item['sku'] ?? 'Tidak Ada SKU'}'),
-                Text('Unit: ${item['unit'] ?? 'Tidak Ada Unit'}'),
-                Text('Stock: ${item['stock']?.toString() ?? '0'}'),
-              ],
-            ),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              Get.toNamed(AppRoutes.EDIT_ITEM, arguments: item);
-            },
           ),
         ),
       );
