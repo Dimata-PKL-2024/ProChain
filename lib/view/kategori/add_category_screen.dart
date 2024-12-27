@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/category_controller.dart';
+import '../../controller/category_controller.dart';
 
-class EditCategoryScreen extends StatelessWidget {
+class AddCategoryScreen extends StatelessWidget {
+  
   final CategoryController controller = Get.put(CategoryController());
 
   @override
@@ -18,7 +19,7 @@ class EditCategoryScreen extends StatelessWidget {
               const SizedBox(height: 16),
               const Center(
                 child: Text(
-                  'Edit kategori yang dipilih',
+                  'Silahkan menambahkan Kategori',
                   style: TextStyle(
                     fontSize: 14,
                     color: Color(0xFF7A7A7A),
@@ -58,9 +59,72 @@ class EditCategoryScreen extends StatelessWidget {
                       onTap: () {
                         showModalBottomSheet(
                           context: context,
-                          isScrollControlled: true,
+                          isScrollControlled:
+                              true, 
                           builder: (context) {
-                            return _buildParentCategoryPicker(context);
+                            return SingleChildScrollView(
+                              child: Container(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Pilih Parent Kategori',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    TextField(
+                                      controller: controller.searchController,
+                                      onChanged: (value) {
+                                        controller.searchLocations(value);
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: 'Cari Lokasi',
+                                        prefixIcon: const Icon(Icons.search),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Obx(
+                                      () => ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          maxHeight: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.5, // Maks tinggi 50% layar
+                                        ),
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: controller
+                                              .filteredLocations.length,
+                                          itemBuilder: (context, index) {
+                                            final location = controller
+                                                .filteredLocations[index];
+                                            return ListTile(
+                                              leading: const Icon(Icons.location_on),
+                                              title: Text(location),
+                                              onTap: () {
+                                                controller
+                                                    .selectedParentCategory
+                                                    .value = location;
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           },
                         );
                       },
@@ -136,8 +200,6 @@ class EditCategoryScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               _buildSaveButton(),
-              const SizedBox(height: 16),
-              _buildDeleteButton(),
             ],
           ),
         ),
@@ -151,7 +213,7 @@ class EditCategoryScreen extends StatelessWidget {
       elevation: 1,
       centerTitle: true,
       title: const Text(
-        'Edit Kategori',
+        'Tambah Kategori',
         style: TextStyle(
           color: Color(0xFF000000),
           fontSize: 15,
@@ -173,6 +235,118 @@ class EditCategoryScreen extends StatelessWidget {
           ),
         ),
       ),
+      actions: [
+        Obx(() => IconButton(
+              icon: Icon(
+                controller.isHidden.value
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                controller.toggleVisibility();
+                if (controller.isHidden.value) {
+                  showDialog(
+                    context: Get.context!,
+                    builder: (context) => AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      contentPadding: const EdgeInsets.all(24),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'Mode Hide',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2E2E2E),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Kategori ini telah disembunyikan!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF2E2E2E),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF5F3DC4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text(
+                              'Selesai',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  showDialog(
+                    context: Get.context!,
+                    builder: (context) => AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      contentPadding: const EdgeInsets.all(24),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            'Mode Normal',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2E2E2E),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Kategori ini telah kembali ke mode normal!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF2E2E2E),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF5F3DC4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text(
+                              'Selesai',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              },
+            )),
+      ],
     );
   }
 
@@ -245,175 +419,24 @@ class EditCategoryScreen extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          Get.back();
+          controller.saveCategory();
+          if (controller.isHidden.value) {
+            Get.toNamed('/hide-view');
+          } else {
+            Get.toNamed('/category');
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF6200EE),
           padding: const EdgeInsets.symmetric(vertical: 12),
         ),
         child: const Text(
-          'Simpan Perubahan',
+          'Simpan',
           style: TextStyle(
             fontSize: 16,
             fontFamily: 'Inter',
             color: Colors.white,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDeleteButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () async {
-          final confirmDelete = await showDialog(
-            context: Get.context!,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                contentPadding: const EdgeInsets.all(24),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.delete,
-                      size: 60,
-                      color: Colors.red,
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Hapus Kategori?',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Apakah Anda yakin ingin menghapus kategori ini?',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.grey[300],
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                          ),
-                          child: const Text(
-                            'Batal',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(true),
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                          ),
-                          child: const Text(
-                            'Hapus',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-
-          if (confirmDelete == true) {
-            controller.deleteCategory;
-            Get.back();
-          }
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
-          padding: const EdgeInsets.symmetric(vertical: 12),
-        ),
-        child: const Text(
-          'Hapus',
-          style: TextStyle(
-            fontSize: 16,
-            fontFamily: 'Inter',
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildParentCategoryPicker(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Pilih Parent Kategori',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: controller.searchController,
-              onChanged: (value) {
-                controller.searchLocations(value);
-              },
-              decoration: InputDecoration(
-                hintText: 'Cari Lokasi',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Obx(
-              () => ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.5,
-                ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: controller.filteredLocations.length,
-                  itemBuilder: (context, index) {
-                    final location = controller.filteredLocations[index];
-                    return ListTile(
-                      leading: const Icon(Icons.location_on),
-                      title: Text(location),
-                      onTap: () {
-                        controller.selectedParentCategory.value = location;
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -430,7 +453,7 @@ class _MoreRow extends StatelessWidget {
     return Row(
       children: [
         Text(
-          isExpanded ? 'Less' : 'More',
+          isExpanded ? 'More' : 'More',
           style: const TextStyle(
             color: Color(0xFF6200EE),
             fontFamily: 'Inter',

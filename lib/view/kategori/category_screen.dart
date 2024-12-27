@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/category_controller.dart';
-import '../routes/app_routes.dart';
+import '../../controller/category_controller.dart';
+import '../../routes/app_routes.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 
@@ -91,30 +91,55 @@ class CategoryScreen extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(
+          Container(
+            height: 110, // Sesuaikan tinggi sesuai kebutuhan
+            decoration: const BoxDecoration(
               color: Color(0xFF5F3DC4),
             ),
-            child: Text(
-              'Menu',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
+            child: const Center(
+              child: Text(
+                'PT. Dimata Sora Jayate',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20, // Ukuran font sesuai
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.category),
-            title: const Text('Kategori'),
-            onTap: () {
-              Get.offNamed(AppRoutes.CATEGORY); 
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Pengaturan'),
-            onTap: () {
-            },
+          ExpansionTile(
+            leading: const Icon(Icons.shopping_bag),
+            title: const Text('Items'),
+            tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+            childrenPadding: const EdgeInsets.only(left: 53), // Geser submenu agar berada tepat di bawah teks "Items"
+            collapsedShape: const RoundedRectangleBorder(), // Hapus garis bawah saat tertutup
+            shape: const RoundedRectangleBorder(), // Hapus garis bawah saat terbuka
+            children: <Widget>[
+              ListTile(
+                title: const Text('Kategori'),
+                contentPadding: EdgeInsets.zero, // Hapus padding untuk submenu
+                onTap: () {
+                  Navigator.of(Get.context!).pop(); // Menutup drawer
+                  Get.offNamed(AppRoutes.CATEGORY); // Navigasi ke halaman kategori
+                },
+              ),
+              ListTile(
+                title: const Text('Items'),
+                contentPadding: EdgeInsets.zero, // Hapus padding untuk submenu
+                onTap: () {
+                  Navigator.of(Get.context!).pop(); // Menutup drawer
+                  Get.offNamed(AppRoutes.ITEMS); // Navigasi ke halaman items
+                },
+              ),
+              ListTile(
+                title: const Text('Satuan / Unit'),
+                contentPadding: EdgeInsets.zero, // Hapus padding untuk submenu
+                onTap: () {
+                  Navigator.of(Get.context!).pop(); // Menutup drawer
+                  Get.offNamed(AppRoutes.UNIT); // Navigasi ke halaman satuan/unit
+                },
+              ),
+            ],
           ),
         ],
       ),

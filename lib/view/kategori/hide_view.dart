@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import '../controller/category_controller.dart';
+import '../../controller/category_controller.dart';
 
 class HideView extends StatelessWidget {
   const HideView({super.key});

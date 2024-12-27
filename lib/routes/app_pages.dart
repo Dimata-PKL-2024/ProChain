@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
-import 'package:lat_prochain/view/hide_view.dart';
+import 'package:lat_prochain/view/item/add_item_screen.dart';
+import 'package:lat_prochain/view/kategori/hide_view.dart';
 import '../bindings/category_binding.dart';
-import '../view/category_screen.dart';
-import '../view/add_category_screen.dart';
-import '../view/edit_category_screen.dart';
+import '../bindings/item_binding.dart';
+import '../view/kategori/category_screen.dart';
+import '../view/kategori/add_category_screen.dart';
+import '../view/kategori/edit_category_screen.dart';
+import '../view/item/items_screen.dart';
+//import '../view/unit_screen.dart'; // Pastikan file view ini ada
 import 'app_routes.dart';
 
 class AppPages {
@@ -23,10 +27,24 @@ class AppPages {
     GetPage(
       name: AppRoutes.HIDE_VIEW,
       page: () => const HideView(),
-),
+    ),
     GetPage(
       name: AppRoutes.EDIT_CATEGORY,
       page: () => EditCategoryScreen(),
-),
+    ),
+    GetPage(
+      name: AppRoutes.ITEMS,
+      page: () => const ItemsScreen(), // Halaman untuk "Items"
+      binding: ItemBinding(),
+    ),
+     GetPage(
+      name: AppRoutes.ADD_ITEM,
+      page: () => AddItemScreen(),
+      binding: ItemBinding(),
+    ),
+    // GetPage(
+    //   name: AppRoutes.UNIT,
+    //   page: () => const UnitScreen(), // Halaman untuk "Satuan / Unit"
+    // ),
   ];
 }
