@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lat_prochain/routes/app_routes.dart';
 import '../../controller/category_controller.dart';
 
 class AddCategoryScreen extends StatelessWidget {
@@ -222,9 +223,7 @@ class AddCategoryScreen extends StatelessWidget {
         ),
       ),
       leading: TextButton(
-        onPressed: () {
-          Get.back();
-        },
+onPressed: () => Get.offNamed(AppRoutes.CATEGORY), 
         child: const Text(
           'Batal',
           style: TextStyle(
