@@ -66,16 +66,27 @@ var filterNumber = ''.obs;
     isHidden.value = !isHidden.value;
   }
 
-  void addCategory() {
-    categories.add({
-      'code': codeController.text,
-      'name': nameController.text,
-      'taxType': taxTypeController.text,
-      'description': descriptionController.text,
-      'parentCategory': selectedParentCategory.value ?? '',
-      'type': selectedType.value,
-    });
-    clearForm();
+  bool isFormValid() {
+    return codeController.text.isNotEmpty &&
+        nameController.text.isNotEmpty &&
+        selectedType.value.isNotEmpty;
+  }
+
+  bool addCategory() {
+    if (isFormValid()) {
+      categories.add({
+        'code': codeController.text,
+        'name': nameController.text,
+        'taxType': taxTypeController.text,
+        'description': descriptionController.text,
+        'parentCategory': selectedParentCategory.value ?? '',
+        'type': selectedType.value,
+      });
+      clearForm();
+      return true; // Berhasil
+    } else {
+      return false; // Gagal
+    }
   }
 
   void clearForm() {

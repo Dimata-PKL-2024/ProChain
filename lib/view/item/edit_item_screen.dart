@@ -8,14 +8,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lat_prochain/routes/app_routes.dart';
 import '../../controller/item_controller.dart';
 
-class AddItemScreen extends StatefulWidget {
+class EditItemScreen extends StatefulWidget {
   @override
-  _AddItemScreenState createState() => _AddItemScreenState();
+  _EditItemScreenState createState() => _EditItemScreenState();
 }
 
-class _AddItemScreenState extends State<AddItemScreen> {
+class _EditItemScreenState extends State<EditItemScreen> {
   final ItemController controller = Get.find<ItemController>();
-  File? _image; // Variabel untuk menyimpan gambar yang dipilih/diambil
+  File? _image;
 
   // Fungsi untuk memilih gambar dari kamera/galeri
   Future<void> _pickImage(ImageSource source) async {
@@ -86,7 +86,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 tooltipText:
                     'Tambahkan deskripsi detail mengenai item ini, seperti kondisi, warna, atau ukuran.',
               ),
-              const SizedBox(height: 11),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Obx(
@@ -308,7 +308,7 @@ GestureDetector(
       elevation: 1,
       centerTitle: true,
       title: const Text(
-        'Tambah Item',
+        'Edit Item',
         style: TextStyle(
           color: Colors.black,
           fontSize: 15,
@@ -380,7 +380,7 @@ GestureDetector(
                 child: Container(
                   height: 100,
                   width: 100,
-                  child: Center(
+                  child: const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -389,8 +389,8 @@ GestureDetector(
                           size: 40,
                           color: Colors.grey,
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
+                        SizedBox(height: 8),
+                        Text(
                           'Gambar',
                           style: TextStyle(
                             fontSize: 14,
@@ -452,26 +452,21 @@ GestureDetector(
   }
 
   Widget _buildChoiceChip(String label, bool isSelected) {
-  return ChoiceChip(
-    label: Text(label),
-    selected: isSelected,
-    onSelected: (isSelected) {
-      // Ketika chip dipilih, kita akan mengubah status selected
-      if (isSelected) {
-        controller.selectedType.value = label;
-      } else {
-        controller.selectedType.value = '';  // Dapat diubah jika Anda ingin reset saat tidak dipilih
-      }
-    },
-    selectedColor: Color(0xFF6200EE),  // Mengubah warna chip menjadi unggu saat dipilih
-    backgroundColor:Colors.white,  // Warna chip saat tidak dipilih
-    checkmarkColor: Colors.white,
-    labelStyle: TextStyle(
-      color: isSelected ? Colors.white : Colors.black,
-    ),
-  );
-}
-
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (isSelected) {
+        if (isSelected) {
+          controller.selectedType.value = label;
+        }
+      },
+      selectedColor: const Color(0xFF6200EE),
+      backgroundColor: const Color(0xFFBDBDBD),
+      labelStyle: TextStyle(
+        color: isSelected ? Colors.white : Colors.black,
+      ),
+    );
+  }
 
   Widget _buildTextField({
     required TextEditingController controller,
@@ -593,9 +588,7 @@ Widget _buildTextFieldWithIcon({
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          controller.saveItem(_image?.path); // Kirim path gambar ke controller
-          Get.toNamed('/items'); // Mengarahkan ke halaman item
+        onPressed: () {; // Mengarahkan ke halaman item
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF6200EE),

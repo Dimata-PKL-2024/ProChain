@@ -413,33 +413,45 @@ onPressed: () => Get.offNamed(AppRoutes.CATEGORY),
     );
   }
 
-  Widget _buildSaveButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          controller.saveCategory();
-          if (controller.isHidden.value) {
-            Get.toNamed('/hide-view');
-          } else {
-            Get.toNamed('/category');
-          }
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF6200EE),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-        ),
-        child: const Text(
-          'Simpan',
-          style: TextStyle(
-            fontSize: 16,
-            fontFamily: 'Inter',
-            color: Colors.white,
-          ),
+Widget _buildSaveButton() {
+  return SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      onPressed: () {
+        final isSuccess = controller.addCategory();
+        if (isSuccess) {
+          Get.snackbar(
+            'Berhasil',
+            'Kategori berhasil disimpan!',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+        } else {
+          Get.snackbar(
+            'Gagal',
+            'Harap isi semua data yang diperlukan!',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF6200EE),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+      ),
+      child: const Text(
+        'Simpan',
+        style: TextStyle(
+          fontSize: 16,
+          fontFamily: 'Inter',
+          color: Colors.white,
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 class _MoreRow extends StatelessWidget {

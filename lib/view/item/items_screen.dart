@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:lat_prochain/view/item/item_detail_screen.dart';
 import 'package:lat_prochain/widgets/custom_drawer.dart';
 import '../../controller/item_controller.dart';
 import '../../routes/app_routes.dart';
@@ -447,7 +448,7 @@ actions: [
                       },
                     );
                   },
-                  child: const Icon(Icons.filter_list, color: Colors.grey),
+                  child: const Icon(Icons.tune, color: Colors.grey),
                 ),
               ],
             ),
@@ -556,9 +557,9 @@ Widget _buildItemList(List<Map<String, dynamic>> items) {
           ],
         ),
         child: GestureDetector(
-          // onTap: () {
-          //   Get.to(() => ItemDetailScreen(item: item));
-          // },
+          onTap: () {
+            Get.to(() => ItemDetailScreen (item: item));
+          },
           child: Card(
             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             shape: RoundedRectangleBorder(

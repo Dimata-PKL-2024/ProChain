@@ -400,7 +400,7 @@ class CategoryScreen extends StatelessWidget {
                   },
                 );
               },
-              child: const Icon(Icons.filter_list, color: Colors.grey),
+              child: const Icon(Icons.tune, color: Colors.grey),
             ),
           ],
         ),

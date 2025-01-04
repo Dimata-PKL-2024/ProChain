@@ -8,5 +8,6 @@ abstract class AppRoutes {
   static const ITEMS = '/items';              
   static const UNIT = '/unit';  
   static const ADD_ITEM = '/add-item';  
+  static const DETAIL_ITEM = '/detail-item';
   static const EDIT_ITEM = '/edit-item';            
 }

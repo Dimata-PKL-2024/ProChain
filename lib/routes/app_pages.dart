@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:lat_prochain/view/item/add_item_screen.dart';
+import 'package:lat_prochain/view/item/edit_item_screen.dart';
+import 'package:lat_prochain/view/item/item_detail_screen.dart';
 import 'package:lat_prochain/view/kategori/hide_view.dart';
 import '../bindings/category_binding.dart';
 import '../bindings/item_binding.dart';
@@ -40,6 +42,16 @@ class AppPages {
      GetPage(
       name: AppRoutes.ADD_ITEM,
       page: () => AddItemScreen(),
+      binding: ItemBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.DETAIL_ITEM,
+      page: () => ItemDetailScreen(item: {},),
+      binding: ItemBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.EDIT_ITEM,
+      page: () => EditItemScreen(),
       binding: ItemBinding(),
     ),
     // GetPage(
