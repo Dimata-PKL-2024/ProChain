@@ -12,8 +12,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Delay 3 detik, lalu arahkan ke halaman utama
-    Future.delayed(Duration(seconds: 3), () {
-      Get.offAllNamed(AppRoutes.CATEGORY);  // Arahkan ke halaman utama (CATEGORY)
+    Future.delayed(const Duration(seconds: 3), () {
+      Get.offAllNamed(AppRoutes.LOGIN);  // Arahkan ke halaman utama (CATEGORY)
     });
   }
 

@@ -9,16 +9,26 @@ import '../view/kategori/category_screen.dart';
 import '../view/kategori/add_category_screen.dart';
 import '../view/kategori/edit_category_screen.dart';
 import '../view/item/items_screen.dart';
+import '../view/login_screen.dart';
+import '../view/dashboard_screen.dart';
 import 'app_routes.dart';
-import '../view/splash/splash_screen.dart';  // Import SplashScreen
+import '../view/splash/splash_screen.dart';  
 
 class AppPages {
-  static const initial = AppRoutes.SPLASH;  // Set initial route to SplashScreen
+  static const initial = AppRoutes.SPLASH;  
 
   static final routes = [
     GetPage(
-      name: AppRoutes.SPLASH,  // Add route for SplashScreen
+      name: AppRoutes.SPLASH,  
       page: () => SplashScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.LOGIN, 
+      page: () => LoginScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.DASHBOARD, 
+      page: () => DashboardScreen(),
     ),
     GetPage(
       name: AppRoutes.CATEGORY,
@@ -58,6 +68,5 @@ class AppPages {
       page: () => EditItemScreen(),
       binding: ItemBinding(),
     ),
-    // Add other routes as needed...
   ];
 }

@@ -318,7 +318,7 @@ GestureDetector(
       leading: TextButton(
       onPressed: () {
         controller.clearForm(); // Reset form
-        Get.offNamed(AppRoutes.ITEMS); // Kembali ke halaman Items
+        Get.offNamed(AppRoutes.DETAIL_ITEM); // Kembali ke halaman Items
       },
         child: const Text(
           'Batal',
