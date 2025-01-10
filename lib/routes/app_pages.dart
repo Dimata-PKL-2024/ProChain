@@ -9,13 +9,17 @@ import '../view/kategori/category_screen.dart';
 import '../view/kategori/add_category_screen.dart';
 import '../view/kategori/edit_category_screen.dart';
 import '../view/item/items_screen.dart';
-//import '../view/unit_screen.dart'; // Pastikan file view ini ada
 import 'app_routes.dart';
+import '../view/splash/splash_screen.dart';  // Import SplashScreen
 
 class AppPages {
-  static const initial = AppRoutes.CATEGORY;
+  static const initial = AppRoutes.SPLASH;  // Set initial route to SplashScreen
 
   static final routes = [
+    GetPage(
+      name: AppRoutes.SPLASH,  // Add route for SplashScreen
+      page: () => SplashScreen(),
+    ),
     GetPage(
       name: AppRoutes.CATEGORY,
       page: () => const CategoryScreen(),
@@ -36,17 +40,17 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.ITEMS,
-      page: () => const ItemsScreen(), // Halaman untuk "Items"
+      page: () => const ItemsScreen(),
       binding: ItemBinding(),
     ),
-     GetPage(
+    GetPage(
       name: AppRoutes.ADD_ITEM,
       page: () => AddItemScreen(),
       binding: ItemBinding(),
     ),
     GetPage(
       name: AppRoutes.DETAIL_ITEM,
-      page: () => ItemDetailScreen(item: {},),
+      page: () => ItemDetailScreen(item: {}),
       binding: ItemBinding(),
     ),
     GetPage(
@@ -54,9 +58,6 @@ class AppPages {
       page: () => EditItemScreen(),
       binding: ItemBinding(),
     ),
-    // GetPage(
-    //   name: AppRoutes.UNIT,
-    //   page: () => const UnitScreen(), // Halaman untuk "Satuan / Unit"
-    // ),
+    // Add other routes as needed...
   ];
 }
