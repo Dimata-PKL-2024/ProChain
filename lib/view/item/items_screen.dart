@@ -16,20 +16,20 @@ Widget build(BuildContext context) {
 
   return Scaffold(
     appBar: PreferredSize(
-      preferredSize: const Size.fromHeight(80), // Tinggi AppBar lebih besar
+      preferredSize: const Size.fromHeight(80), 
       child: Container(
-        padding: const EdgeInsets.only(top: 10), // Tambahkan jarak di atas header
-        color: const Color(0xFF5F3DC4), // Warna latar belakang header
+        padding: const EdgeInsets.only(top: 10), 
+        color: const Color(0xFF5F3DC4),
         child: AppBar(
           title: const Text('Daftar Item',
               style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.transparent, // Transparan karena sudah dibungkus Container
+          backgroundColor: Colors.transparent, 
           centerTitle: true,
-          iconTheme: const IconThemeData(color: Colors.white), // Warna ikon burger putih
+          iconTheme: const IconThemeData(color: Colors.white), 
           elevation: 0,
 actions: [
   IconButton(
-    icon: const Icon(Icons.description), // Ganti dengan ikon dokumen
+    icon: const Icon(Icons.description), 
     onPressed: () {
       // Fungsi untuk tombol file (misalnya membuka file)
       print('Ikon file diklik');
@@ -40,10 +40,10 @@ actions: [
         ),
       ),
     ),
-    drawer: const CustomDrawer(), // Pindahkan drawer ke tingkat Scaffold
+    drawer: const CustomDrawer(), 
     body: Column(
       children: [
-        _buildSearchAndFilter(controller), // Panggil widget buildSearchAndFilter di sini
+        _buildSearchAndFilter(controller), 
         Expanded(
           child: Obx(() {
             if (controller.filteredItems.isEmpty) {

@@ -42,7 +42,7 @@ dependencies:
   dotted_border: ^2.1.0
   barcode_scan2: ^4.3.3
   flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.1.0
+  flutter_native_splash: ^2.4.4
 
 
 dev_dependencies:
@@ -61,11 +61,11 @@ flutter_icons:
   ios: true
   image_path: "assets/prochain_icon.png"
 
-flutter_native_splash:
-  color: "#ffffff"  # Warna latar belakang splash screen
-  image: prochain_icon.jpg  # Lokasi gambar splash screen
-  android: true
-  ios: true
+# flutter_native_splash:
+#   color: "#ffffff"  # Warna latar belakang splash screen
+#   image: prochain_icon.jpg  # Lokasi gambar splash screen
+#   android: true
+#   ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

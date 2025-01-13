@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+  title: ProChain Mobile API
+  version: 1.0.0
+  description: API untuk kesepakatan seluruh team yang tergabung dalam project ini.
+servers:
+  - url: https://api.technicianservice.com/v1
+    description: Main API server
+
+paths:
+  # Manajemen Akun Pengguna
+  /auth/register:
+    post:
+      summary: Mendaftar pengguna baru
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - role
+              properties:
+                name:
+                  type: string
+                  description: Nama lengkap pengguna
+                email:
+                  type: string
+                  description: Alamat email pengguna
+                password:
+                  type: string
+                  description: Kata sandi pengguna
+                role:
+                  type: string
+                  description: Peran pengguna, "customer" atau "technician"
+                  enum:
+                    - customer
+                    - technician
+      responses:
+        '201':
+          description: Pengguna berhasil terdaftar
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "user123"
+                      name:
+                        type: string
+                        example: "John Doe"
+                      email:
+                        type: string
+                        example: "johndoe@example.com"
+                      role:
+                        type: string
+                        example: "customer"
+
+  /auth/login:
+    post:
+      summary: Login pengguna
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: "johndoe@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        '200':
+          description: Login berhasil
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Login successful"
+                  token:
+                    type: string
+                    example: "jwt_token_example_123"
