@@ -29,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
 
-          // Expansion Tile Menu
+          // Expansion Tile Menu - Items
           ExpansionTile(
             leading: const Icon(Icons.shopping_bag),
             title: const Text('Items'),
@@ -66,6 +66,103 @@ class CustomDrawer extends StatelessWidget {
                 },
               ),
             ],
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.people),
+            title: const Text('Supplier'),
+            onTap: () {
+              //Navigator.of(Get.context!).pop(); // Tutup drawer
+              //Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('Gudang'),
+            onTap: () {
+              //Navigator.of(Get.context!).pop(); // Tutup drawer
+              //Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_cart),
+            title: const Text('Pembelian'),
+            onTap: () {
+              Navigator.of(Get.context!).pop(); // Tutup drawer
+              Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.system_update_alt),
+            title: const Text('Penerimaan'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.sync),
+            title: const Text('Return'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.ios_share),
+            title: const Text('Transfer'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_balance_wallet),
+            title: const Text('Pembiayaan'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.analytics),
+            title: const Text('Produksi'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.all_inbox), //INI HARUSNYA ICON KUBUS
+            title: const Text('Opname'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.folder),
+            title: const Text('Project'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.description),
+            title: const Text('Laporan'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.analytics),
+            title: const Text('Produksi'),
+            onTap: () {
+              // Navigator.of(Get.context!).pop(); // Tutup drawer
+              // Get.offNamed(AppRoutes.PEMBELIAN); // Navigasi ke halaman Pembelian
+            },
           ),
         ],
       ),
