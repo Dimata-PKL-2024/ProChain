@@ -13,4 +13,5 @@ abstract class AppRoutes {
   static const ADD_ITEM = '/add-item';  
   static const DETAIL_ITEM = '/detail-item';
   static const EDIT_ITEM = '/edit-item';   
+  static const PEMBELIAN = '/pembelian';
 }
